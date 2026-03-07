@@ -40,6 +40,7 @@
 
   /* NAV */
   nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 28px 60px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent); }
+  .nav-toggle { display: none; }
   .logo { font-family: "Bebas Neue", cursive; font-size: 2rem; letter-spacing: 6px; color: var(--white); }
   .logo span { color: var(--accent); }
   .nav-links { display: flex; gap: 40px; list-style: none; }
@@ -162,6 +163,122 @@
   @keyframes scrollLine { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
   .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== MOBILE RESPONSIVE ===== */
+  @media (max-width: 768px) {
+
+    /* CURSOR — hide on touch */
+    #cur-dot, #cur-ring { display: none; }
+    * { cursor: auto !important; }
+
+    /* NAV */
+    nav {
+      padding: 20px 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: relative;
+    }
+    .nav-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 20px;
+      background: none;
+      border: none;
+      cursor: pointer !important;
+      padding: 0;
+      z-index: 200;
+    }
+    .nav-toggle span {
+      display: block;
+      height: 1.5px;
+      background: var(--white);
+      transition: all 0.3s;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(9.25px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-9.25px) rotate(-45deg); }
+    .nav-links {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 0;
+      background: rgba(8,8,8,0.98);
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { padding: 12px 0; }
+    .nav-links a { font-size: 0.85rem; letter-spacing: 2px; }
+
+    /* HERO */
+    #hero {
+      padding: 0 24px 60px;
+      justify-content: flex-end;
+    }
+    .hero-title { font-size: clamp(3.5rem, 16vw, 6rem); }
+    .hero-sub { font-size: 0.9rem; max-width: 100%; }
+    .hero-cta-row { flex-direction: column; align-items: flex-start; gap: 20px; margin-top: 30px; }
+    .hero-scroll { display: none; }
+
+    /* SECTIONS */
+    section { padding: 70px 24px; }
+    .section-title { font-size: clamp(2.2rem, 10vw, 4rem); }
+
+    /* PORTFOLIO */
+    .portfolio-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .portfolio-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    .portfolio-item:first-child { grid-column: 1; grid-row: auto; }
+    .portfolio-item { height: 240px; }
+    .portfolio-item:first-child { height: auto; }
+
+    /* SERVICES */
+    .services-layout {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .service-card { grid-template-columns: 1fr; }
+
+    /* ABOUT */
+    .about-layout {
+      grid-template-columns: 1fr;
+      gap: 60px;
+    }
+    .about-visual { height: 360px; }
+    .about-accent-box { right: -10px; bottom: -10px; width: 100px; height: 100px; }
+    .about-stat-box { left: -10px; top: -10px; padding: 16px 20px; }
+    .about-stat-num { font-size: 2rem; }
+
+    /* CONTACT */
+    .contact-layout {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+    .form-row { grid-template-columns: 1fr; }
+    .btn-submit { align-self: stretch; text-align: center; }
+
+    /* FOOTER */
+    footer {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+      padding: 30px 24px;
+    }
+    .divider { margin: 0 24px; }
+  }
+
+  /* Small phones */
+  @media (max-width: 480px) {
+    nav { padding: 16px 20px; }
+    .nav-links { gap: 14px; }
+    #hero { padding: 0 20px 50px; }
+    section { padding: 60px 20px; }
+    .hero-title { font-size: clamp(3rem, 18vw, 5rem); }
+  }
 </style>
 </head>
 <body>
@@ -171,11 +288,14 @@
 
 <nav>
   <div class="logo">FR<span>A</span>ME</div>
-  <ul class="nav-links">
-    <li><a href="#portfolio">Work</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#portfolio" class="nav-close">Work</a></li>
+    <li><a href="#services" class="nav-close">Services</a></li>
+    <li><a href="#about" class="nav-close">About</a></li>
+    <li><a href="#contact" class="nav-close">Contact</a></li>
   </ul>
 </nav>
 
@@ -290,15 +410,16 @@
     </div>
     <div class="contact-form reveal">
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Your name"></div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"></div>
+        <div class="form-group"><label class="form-label">Name</label><input id="f-name" class="form-input" type="text" placeholder="Your name"></div>
+        <div class="form-group"><label class="form-label">Email</label><input id="f-email" class="form-input" type="email" placeholder="your@email.com"></div>
       </div>
       <div class="form-group">
         <label class="form-label">Service Needed</label>
-        <select class="form-select"><option value="" disabled selected>Select a service...</option><option>Short-Form Edit</option><option>Long-Form Edit</option><option>Color Grading</option><option>Motion Graphics</option><option>Monthly Retainer</option><option>Other / Custom</option></select>
+        <select id="f-service" class="form-select"><option value="" disabled selected>Select a service...</option><option>Short-Form Edit</option><option>Long-Form Edit</option><option>Color Grading</option><option>Motion Graphics</option><option>Monthly Retainer</option><option>Other / Custom</option></select>
       </div>
-      <div class="form-group"><label class="form-label">Project Details</label><textarea class="form-textarea" placeholder="Describe your project, timeline, and any references..."></textarea></div>
-      <button class="btn-submit">Send Message</button>
+      <div class="form-group"><label class="form-label">Project Details</label><textarea id="f-message" class="form-textarea" placeholder="Describe your project, timeline, and any references..."></textarea></div>
+      <button class="btn-submit" id="submitBtn">Send Message</button>
+      <div id="form-status" style="margin-top:16px;font-size:0.85rem;letter-spacing:1px;display:none;"></div>
     </div>
   </div>
 </section>
@@ -336,7 +457,68 @@
     el.addEventListener("mouseleave", function() { ring.classList.remove("hov"); });
   });
 
-  // SCROLL REVEAL
+  // GOOGLE SHEETS FORM
+  var SHEET_URL = "https://script.google.com/macros/s/AKfycbx5gA8TSjNnvzZRD8Kbu19pLRCBxKh_-ZG_2qfxoc7ddlLWZys6bKALPsiUHCbF_X5uEA/exec";
+
+  document.getElementById("submitBtn").addEventListener("click", function() {
+    var name = document.getElementById("f-name").value.trim();
+    var email = document.getElementById("f-email").value.trim();
+    var service = document.getElementById("f-service").value;
+    var message = document.getElementById("f-message").value.trim();
+    var status = document.getElementById("form-status");
+
+    if (!name || !email || !service || !message) {
+      status.style.display = "block";
+      status.style.color = "#e8c97e";
+      status.textContent = "Please fill in all fields.";
+      return;
+    }
+
+    var btn = document.getElementById("submitBtn");
+    btn.textContent = "Sending...";
+    btn.disabled = true;
+    status.style.display = "none";
+
+    fetch(SHEET_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: name, email: email, service: service, message: message })
+    }).then(function() {
+      status.style.display = "block";
+      status.style.color = "#e8c97e";
+      status.textContent = "Message sent! I\'ll get back to you within 24 hours.";
+      btn.textContent = "Send Message";
+      btn.disabled = false;
+      document.getElementById("f-name").value = "";
+      document.getElementById("f-email").value = "";
+      document.getElementById("f-service").selectedIndex = 0;
+      document.getElementById("f-message").value = "";
+    }).catch(function() {
+      status.style.display = "block";
+      status.style.color = "#ff6b6b";
+      status.textContent = "Something went wrong. Please try again.";
+      btn.textContent = "Send Message";
+      btn.disabled = false;
+    });
+  });
+
+  // HAMBURGER MENU
+  var navToggle = document.getElementById("navToggle");
+  var navLinks = document.getElementById("navLinks");
+  if (navToggle) {
+    navToggle.addEventListener("click", function() {
+      navToggle.classList.toggle("open");
+      navLinks.classList.toggle("open");
+    });
+    document.querySelectorAll(".nav-close").forEach(function(link) {
+      link.addEventListener("click", function() {
+        navToggle.classList.remove("open");
+        navLinks.classList.remove("open");
+      });
+    });
+  }
+
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry, i) {
       if (entry.isIntersecting) {
