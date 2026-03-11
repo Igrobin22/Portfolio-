@@ -214,6 +214,55 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 .video-placeholder small{font-size:.65rem;color:var(--muted);opacity:.6;text-align:center;padding:0 20px;}
 .video-item.featured{grid-column:span 2;}
 
+/* ── EVENT VIDEO REEL STAGE ── */
+.ev-reel-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 60px 0;position:relative;}
+
+/* Animated rings behind the video */
+.ev-ring{position:absolute;border-radius:50%;pointer-events:none;}
+.ev-ring-1{width:420px;height:420px;border:1px solid rgba(232,201,126,.12);animation:evRingSpin 12s linear infinite;}
+.ev-ring-2{width:520px;height:520px;border:1px solid rgba(232,201,126,.06);animation:evRingSpin 20s linear infinite reverse;}
+@keyframes evRingSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+/* Corner bracket marks */
+.ev-corner{position:absolute;width:22px;height:22px;pointer-events:none;}
+.ev-corner-tl{top:44px;left:calc(50% - 175px);border-top:2px solid var(--accent);border-left:2px solid var(--accent);}
+.ev-corner-tr{top:44px;right:calc(50% - 175px);border-top:2px solid var(--accent);border-right:2px solid var(--accent);}
+.ev-corner-bl{bottom:36px;left:calc(50% - 175px);border-bottom:2px solid var(--accent);border-left:2px solid var(--accent);}
+.ev-corner-br{bottom:36px;right:calc(50% - 175px);border-bottom:2px solid var(--accent);border-right:2px solid var(--accent);}
+
+/* The reel video frame */
+.ev-reel-frame{position:relative;width:320px;aspect-ratio:9/16;overflow:hidden;cursor:pointer!important;
+  box-shadow:0 0 0 1px rgba(232,201,126,.35), 0 0 40px rgba(232,201,126,.07), 0 24px 60px rgba(0,0,0,.7);
+  border-radius:2px;}
+
+/* Glowing accent border animation */
+.ev-reel-frame::before{content:"";position:absolute;inset:-2px;border-radius:3px;background:linear-gradient(135deg,rgba(232,201,126,.7) 0%,rgba(232,201,126,0) 40%,rgba(232,201,126,0) 60%,rgba(232,201,126,.5) 100%);z-index:3;pointer-events:none;animation:evBorderGlow 3s ease-in-out infinite alternate;}
+@keyframes evBorderGlow{from{opacity:.6;}to{opacity:1;}}
+
+/* Side tick marks */
+.ev-reel-frame::after{content:"";position:absolute;top:0;left:-14px;width:2px;height:100%;background:repeating-linear-gradient(to bottom,rgba(232,201,126,.4) 0px,rgba(232,201,126,.4) 4px,transparent 4px,transparent 12px);pointer-events:none;z-index:3;}
+
+/* Hover play overlay */
+.ev-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(8,8,8,0);transition:background .35s;z-index:4;}
+.ev-reel-frame:hover .ev-play-overlay{background:rgba(8,8,8,.5);}
+.ev-play-btn{width:64px;height:64px;border:2px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;transform:scale(.8);opacity:0;transition:transform .35s,opacity .35s;background:rgba(8,8,8,.6);}
+.ev-reel-frame:hover .ev-play-btn{transform:scale(1);opacity:1;}
+.ev-play-label{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--white);opacity:0;transform:translateY(6px);transition:opacity .3s .05s,transform .3s .05s;}
+.ev-reel-frame:hover .ev-play-label{opacity:1;transform:translateY(0);}
+
+/* Label under the video */
+.ev-reel-label{margin-top:24px;display:flex;align-items:center;gap:10px;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.ev-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;animation:evDotPulse 1.8s ease-in-out infinite;}
+@keyframes evDotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+
+/* ── EVENT VIDEO MODAL ── */
+.ev-modal{position:fixed;inset:0;background:rgba(8,8,8,.96);z-index:99999;display:none;align-items:center;justify-content:center;padding:30px 20px;}
+.ev-modal.open{display:flex;}
+.ev-modal-inner{position:relative;width:100%;max-width:400px;}
+.ev-modal-close{position:absolute;top:-48px;right:0;background:none;border:1px solid var(--border);color:var(--white);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;cursor:pointer!important;display:flex;align-items:center;gap:8px;transition:border-color .3s,color .3s;}
+.ev-modal-close:hover{border-color:var(--accent);color:var(--accent);}
+.ev-modal-video{position:relative;width:100%;padding-top:177.78%;background:#000;}
+
 /* ── LIGHTBOX ── */
 .lightbox{position:fixed;inset:0;background:rgba(8,8,8,.96);z-index:9999;display:none;align-items:center;justify-content:center;padding:40px;}
 .lightbox.open{display:flex;}
@@ -1006,8 +1055,42 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
     <p class="header-sub">Cinematic event videography — from corporate gatherings to live performances, every significant moment preserved with intention and style.</p>
   </div>
   <div class="video-section">
-    <div class="video-grid">
-      <div class="video-item featured" style="max-width:400px;margin:0 auto;width:100%;aspect-ratio:9/16;"><iframe src="https://player.cloudinary.com/embed/?cloud_name=dmnvhqxav&public_id=0309_hlkfw2" width="100%" height="100%" style="border:none;display:block;" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+    <!-- Reel-size featured video, centered -->
+    <div class="ev-reel-stage">
+      <!-- Decorative corner marks -->
+      <div class="ev-corner ev-corner-tl"></div>
+      <div class="ev-corner ev-corner-tr"></div>
+      <div class="ev-corner ev-corner-bl"></div>
+      <div class="ev-corner ev-corner-br"></div>
+      <!-- Animated accent ring -->
+      <div class="ev-ring ev-ring-1"></div>
+      <div class="ev-ring ev-ring-2"></div>
+      <!-- The reel frame -->
+      <div class="ev-reel-frame" onclick="openEventPlayer()" title="Click to play with sound">
+        <iframe
+          id="evLoopFrame"
+          src="https://player.cloudinary.com/embed/?cloud_name=dmnvhqxav&public_id=0309_hlkfw2&autoplay=true&muted=true&loop=true&controls=false&playsinline=true"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;pointer-events:none;"
+          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <!-- Hover overlay -->
+        <div class="ev-play-overlay">
+          <div class="ev-play-btn">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="var(--accent)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+          <span class="ev-play-label">Play with Sound</span>
+        </div>
+      </div>
+      <!-- Label below -->
+      <div class="ev-reel-label">
+        <span class="ev-dot"></span>
+        Live Loop &nbsp;&mdash;&nbsp; Click to play
+      </div>
+    </div>
+
+    <!-- Other video placeholders -->
+    <div class="video-grid" style="margin-top:60px;">
       <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
       <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
       <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
@@ -1015,6 +1098,25 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
     </div>
   </div>
   <footer><div class="footer-logo">FR<span>A</span>ME</div><div class="footer-copy">&copy; 2026 Frame Edits.</div><div class="footer-social"><a href="https://www.instagram.com/noman.visuals/" target="_blank">Instagram</a></div></footer>
+</div>
+
+<!-- ══════════════ EVENT VIDEO PLAYER MODAL ══════════════ -->
+<div id="evModal" class="ev-modal" onclick="closeEventPlayer(event)">
+  <div class="ev-modal-inner">
+    <button class="ev-modal-close" onclick="closeEventPlayer()">
+      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Close
+    </button>
+    <div class="ev-modal-video">
+      <iframe
+        id="evModalFrame"
+        src=""
+        style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
 </div>
 
 <!-- ══════════════ PAGE: SHORT FORM / REAL ESTATE ══════════════ -->
@@ -1167,6 +1269,21 @@ function bindHover(){
   });
 }
 bindHover();
+
+// ── EVENT VIDEO MODAL ──
+var EV_SRC="https://player.cloudinary.com/embed/?cloud_name=dmnvhqxav&public_id=0309_hlkfw2&autoplay=true&muted=false&loop=false&controls=true";
+function openEventPlayer(){
+  document.getElementById("evModalFrame").src=EV_SRC;
+  document.getElementById("evModal").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeEventPlayer(e){
+  if(e&&e.target!==document.getElementById("evModal")&&!e.target.closest(".ev-modal-close"))return;
+  document.getElementById("evModalFrame").src="";
+  document.getElementById("evModal").classList.remove("open");
+  document.body.style.overflow="";
+}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeEventPlayer({target:document.getElementById("evModal")});});
 
 // ── LIGHTBOX ──
 document.querySelectorAll(".gallery-item").forEach(function(item){
