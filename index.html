@@ -214,6 +214,50 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 .video-placeholder small{font-size:.65rem;color:var(--muted);opacity:.6;text-align:center;padding:0 20px;}
 .video-item.featured{grid-column:span 2;}
 
+/* ── EVENT VIDEO GRID ── */
+.ev-video-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px;padding:60px 60px 120px;justify-items:center;}
+.ev-video-grid .video-item{background:var(--card);overflow:hidden;width:100%;max-width:320px;}
+.ev-video-grid .video-placeholder{aspect-ratio:9/16;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border:1px dashed var(--border);background:var(--card);}
+.ev-video-grid .video-placeholder svg{width:40px;height:40px;stroke:var(--muted);fill:none;stroke-width:1;}
+.ev-video-grid .video-placeholder span{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+
+/* Grid item wrapper — same stage treatment as featured */
+.ev-grid-item{cursor:pointer!important;position:relative;display:flex;flex-direction:column;align-items:center;width:100%;max-width:320px;}
+
+/* Corner brackets */
+.ev-grid-item::before,.ev-grid-item::after{content:"";position:absolute;width:18px;height:18px;pointer-events:none;z-index:5;}
+.ev-grid-item::before{top:-8px;left:-8px;border-top:2px solid var(--accent);border-left:2px solid var(--accent);}
+.ev-grid-item::after{top:-8px;right:-8px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);}
+
+/* Bottom corners via inner pseudo on preview */
+.ev-grid-preview{position:relative;aspect-ratio:9/16;overflow:hidden;background:#000;width:100%;border-radius:2px;
+  box-shadow:0 0 0 1px rgba(232,201,126,.35), 0 0 40px rgba(232,201,126,.07), 0 24px 60px rgba(0,0,0,.7);}
+/* Scale video slightly to clip any player chrome at edges */
+.ev-grid-preview video{position:absolute;top:50%;left:50%;width:102%;height:102%;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;}
+
+/* Glowing border sweep — same as featured */
+.ev-grid-preview::before{content:"";position:absolute;inset:-2px;border-radius:3px;background:linear-gradient(135deg,rgba(232,201,126,.7) 0%,rgba(232,201,126,0) 40%,rgba(232,201,126,0) 60%,rgba(232,201,126,.5) 100%);z-index:3;pointer-events:none;animation:evBorderGlow 3s ease-in-out infinite alternate;}
+
+/* Film strip tick marks on left side */
+.ev-grid-preview::after{content:"";position:absolute;top:0;left:-14px;width:2px;height:100%;background:repeating-linear-gradient(to bottom,rgba(232,201,126,.4) 0px,rgba(232,201,126,.4) 4px,transparent 4px,transparent 12px);pointer-events:none;z-index:3;}
+
+/* Bottom corner brackets via label pseudo elements — use a wrapper div instead */
+.ev-grid-corners-bl,.ev-grid-corners-br{position:absolute;bottom:-8px;width:18px;height:18px;pointer-events:none;z-index:5;}
+.ev-grid-corners-bl{left:-8px;border-bottom:2px solid var(--accent);border-left:2px solid var(--accent);}
+.ev-grid-corners-br{right:-8px;border-bottom:2px solid var(--accent);border-right:2px solid var(--accent);}
+
+/* Hover overlay */
+.ev-grid-preview:hover .ev-play-overlay{background:rgba(8,8,8,.5);}
+.ev-grid-item .ev-play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(8,8,8,0);transition:background .35s;z-index:4;}
+.ev-grid-item .ev-play-btn{width:60px;height:60px;border:2px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;transform:scale(.8);opacity:0;transition:transform .35s,opacity .35s;background:rgba(8,8,8,.6);}
+.ev-grid-preview:hover .ev-play-btn{transform:scale(1);opacity:1;}
+.ev-grid-item .ev-play-label{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--white);opacity:0;transform:translateY(6px);transition:opacity .3s .05s,transform .3s .05s;}
+.ev-grid-preview:hover .ev-play-label{opacity:1;transform:translateY(0);}
+
+/* Pulsing label under each grid video */
+.ev-grid-label{margin-top:16px;display:flex;align-items:center;gap:8px;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.ev-grid-label .ev-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block;animation:evDotPulse 1.8s ease-in-out infinite;}
+
 /* ── EVENT VIDEO REEL STAGE ── */
 .ev-reel-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 60px 0;position:relative;}
 
@@ -233,7 +277,9 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 /* The reel video frame */
 .ev-reel-frame{position:relative;width:320px;aspect-ratio:9/16;overflow:hidden;cursor:pointer!important;
   box-shadow:0 0 0 1px rgba(232,201,126,.35), 0 0 40px rgba(232,201,126,.07), 0 24px 60px rgba(0,0,0,.7);
-  border-radius:2px;}
+  border-radius:2px;background:#000;}
+/* Scale video to fill reel frame cleanly */
+.ev-reel-frame video{position:absolute;top:50%;left:50%;width:100%;height:100%;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;}
 
 /* Glowing accent border animation */
 .ev-reel-frame::before{content:"";position:absolute;inset:-2px;border-radius:3px;background:linear-gradient(135deg,rgba(232,201,126,.7) 0%,rgba(232,201,126,0) 40%,rgba(232,201,126,0) 60%,rgba(232,201,126,.5) 100%);z-index:3;pointer-events:none;animation:evBorderGlow 3s ease-in-out infinite alternate;}
@@ -262,6 +308,9 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 .ev-modal-close{position:absolute;top:-48px;right:0;background:none;border:1px solid var(--border);color:var(--white);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;cursor:pointer!important;display:flex;align-items:center;gap:8px;transition:border-color .3s,color .3s;}
 .ev-modal-close:hover{border-color:var(--accent);color:var(--accent);}
 .ev-modal-video{position:relative;width:100%;padding-top:177.78%;background:#000;}
+
+/* Logo animation page — remove glow overlay so video colours show cleanly */
+#page-logo .ev-grid-preview::before{display:none;}
 
 /* ── LIGHTBOX ── */
 .lightbox{position:fixed;inset:0;background:rgba(8,8,8,.96);z-index:9999;display:none;align-items:center;justify-content:center;padding:40px;}
@@ -323,6 +372,14 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
   .video-section{padding:0 24px 80px;}
   .video-grid{grid-template-columns:1fr;}
   .video-item.featured{grid-column:auto;}
+  .ev-video-grid{grid-template-columns:1fr;padding:40px 24px 80px;gap:60px;}
+  .ev-grid-item,.ev-video-grid .video-item{max-width:280px;}
+  .ev-reel-stage{padding:40px 24px 0;}
+  .ev-ring-1{width:300px;height:300px;}
+  .ev-ring-2{width:380px;height:380px;}
+  .ev-corner-tl,.ev-corner-bl{left:calc(50% - 135px);}
+  .ev-corner-tr,.ev-corner-br{right:calc(50% - 135px);}
+  .ev-reel-frame{width:260px;}
 }
 @media(min-width:769px) and (max-width:1100px){
   .hub-grid{grid-template-columns:repeat(2,1fr);}
@@ -1030,17 +1087,26 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
     <div class="header-title">Raw Conversations,<br><em>Cinematic</em> Results.</div>
     <p class="header-sub">Multi-camera podcast shoots and edits — professional audio cleanup, dynamic cuts, and short-form clips ready for social distribution.</p>
   </div>
-  <div class="upload-notice">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <p><strong>Add your videos here.</strong> Replace each placeholder with a Vimeo or YouTube embed. Vimeo: <code>https://player.vimeo.com/video/YOUR_ID</code> &nbsp;|&nbsp; YouTube: <code>https://www.youtube.com/embed/YOUR_ID</code></p>
-  </div>
-  <div class="video-section">
-    <div class="video-grid">
-      <div class="video-item featured"><div class="video-placeholder" style="aspect-ratio:16/9;"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Featured Video</span><small>Paste Vimeo or YouTube embed iframe here</small></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
+  <div class="ev-video-grid" style="margin-top:60px;padding-top:0;">
+    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
+    </div>
+    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
+    </div>
+    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
+    </div>
+    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
     </div>
   </div>
   <footer><div class="footer-logo">FR<span>A</span>ME</div><div class="footer-copy">&copy; 2026 Frame Edits.</div><div class="footer-social"><a href="https://www.instagram.com/noman.visuals/" target="_blank">Instagram</a></div></footer>
@@ -1067,13 +1133,11 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
       <div class="ev-ring ev-ring-2"></div>
       <!-- The reel frame -->
       <div class="ev-reel-frame" onclick="openEventPlayer()" title="Click to play with sound">
-        <iframe
+        <video
           id="evLoopFrame"
-          src="https://player.cloudinary.com/embed/?cloud_name=dmnvhqxav&public_id=0309_hlkfw2&autoplay=true&muted=true&loop=true&controls=false&playsinline=true"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;pointer-events:none;"
-          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+          src="https://res.cloudinary.com/dmnvhqxav/video/upload/v1773254061/0309_hlkfw2.mp4"
+          muted loop playsinline>
+        </video>
         <!-- Hover overlay -->
         <div class="ev-play-overlay">
           <div class="ev-play-btn">
@@ -1089,10 +1153,37 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
       </div>
     </div>
 
-    <!-- Other video placeholders -->
-    <div class="video-grid" style="margin-top:60px;">
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
+    <!-- Other videos -->
+    <div class="ev-video-grid" style="margin-top:60px;">
+
+      <!-- Video 2: 0311 -->
+      <div class="ev-grid-item" onclick="openGridPlayer('https://res.cloudinary.com/dmnvhqxav/video/upload/v1773254061/0311_wco2pj.mp4')" title="Click to play with sound">
+        <div class="ev-grid-corners-bl"></div>
+        <div class="ev-grid-corners-br"></div>
+        <div class="ev-grid-preview">
+          <video src="https://res.cloudinary.com/dmnvhqxav/video/upload/v1773254061/0311_wco2pj.mp4" muted loop playsinline></video>
+          <div class="ev-play-overlay">
+            <div class="ev-play-btn"><svg viewBox="0 0 24 24" width="26" height="26" fill="var(--accent)"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span class="ev-play-label">Play with Sound</span>
+          </div>
+        </div>
+        <div class="ev-grid-label"><span class="ev-dot"></span>Live Loop &nbsp;&mdash;&nbsp; Click to play</div>
+      </div>
+
+      <!-- Video 3: 0311_1 -->
+      <div class="ev-grid-item" onclick="openGridPlayer('https://res.cloudinary.com/dmnvhqxav/video/upload/v1773254300/0311_1_u34ogj.mp4')" title="Click to play with sound">
+        <div class="ev-grid-corners-bl"></div>
+        <div class="ev-grid-corners-br"></div>
+        <div class="ev-grid-preview">
+          <video src="https://res.cloudinary.com/dmnvhqxav/video/upload/v1773254300/0311_1_u34ogj.mp4" muted loop playsinline></video>
+          <div class="ev-play-overlay">
+            <div class="ev-play-btn"><svg viewBox="0 0 24 24" width="26" height="26" fill="var(--accent)"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span class="ev-play-label">Play with Sound</span>
+          </div>
+        </div>
+        <div class="ev-grid-label"><span class="ev-dot"></span>Live Loop &nbsp;&mdash;&nbsp; Click to play</div>
+      </div>
+
       <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
       <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
     </div>
@@ -1115,6 +1206,13 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
         allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
         allowfullscreen>
       </iframe>
+      <video
+        id="evModalVideo"
+        src=""
+        controls
+        playsinline
+        style="position:absolute;top:0;left:0;width:100%;height:100%;display:none;background:#000;">
+      </video>
     </div>
   </div>
 </div>
@@ -1127,17 +1225,26 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
     <div class="header-title">Content Built to<br><em>Stop</em> the Scroll.</div>
     <p class="header-sub">Reels, TikToks, real estate walkthroughs, and YouTube Shorts — platform-optimized edits that drive engagement and showcase properties at their best.</p>
   </div>
-  <div class="upload-notice">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <p><strong>Add your videos here.</strong> Replace each placeholder with a Vimeo or YouTube embed iframe.</p>
-  </div>
-  <div class="video-section">
-    <div class="video-grid">
-      <div class="video-item featured"><div class="video-placeholder" style="aspect-ratio:16/9;"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Featured Video</span><small>Paste Vimeo or YouTube embed iframe here</small></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
+  <div class="ev-video-grid" style="margin-top:60px;padding-top:0;">
+    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
+    </div>
+    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
+    </div>
+    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
+    </div>
+    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
     </div>
   </div>
   <footer><div class="footer-logo">FR<span>A</span>ME</div><div class="footer-copy">&copy; 2026 Frame Edits.</div><div class="footer-social"><a href="https://www.instagram.com/noman.visuals/" target="_blank">Instagram</a></div></footer>
@@ -1176,18 +1283,54 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
     <div class="header-title">Your Brand,<br><em>In Motion.</em></div>
     <p class="header-sub">Custom animated logos for intros, outros, and social content — delivered in multiple formats to make your brand unforgettable.</p>
   </div>
-  <div class="upload-notice">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <p><strong>Add your videos here.</strong> Replace each placeholder with a Vimeo or YouTube embed iframe.</p>
-  </div>
-  <div class="video-section">
-    <div class="video-grid">
-      <div class="video-item featured"><div class="video-placeholder" style="aspect-ratio:16/9;"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Featured Video</span><small>Paste Vimeo or YouTube embed iframe here</small></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
-      <div class="video-item"><div class="video-placeholder"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg><span>Add Video</span></div></div>
+  <div class="ev-video-grid" style="margin-top:60px;padding-top:0;">
+
+    <!-- Video 1: Pre-comp_1 -->
+    <div class="ev-grid-item" onclick="openGridPlayer('https://res.cloudinary.com/dmnvhqxav/video/upload/v1773255227/Pre-comp_1_zsvcnz.mp4')" title="Click to play with sound">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview">
+        <video src="https://res.cloudinary.com/dmnvhqxav/video/upload/v1773255227/Pre-comp_1_zsvcnz.mp4" muted loop playsinline></video>
+        <div class="ev-play-overlay">
+          <div class="ev-play-btn"><svg viewBox="0 0 24 24" width="26" height="26" fill="var(--accent)"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="ev-play-label">Play with Sound</span>
+        </div>
+      </div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Live Loop &nbsp;&mdash;&nbsp; Click to play</div>
     </div>
+
+    <!-- Video 2: 0311_2 -->
+    <div class="ev-grid-item" onclick="openGridPlayer('https://res.cloudinary.com/dmnvhqxav/video/upload/v1773255479/0311_2_hdgzxe.mp4')" title="Click to play with sound">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview">
+        <video src="https://res.cloudinary.com/dmnvhqxav/video/upload/v1773255479/0311_2_hdgzxe.mp4" muted loop playsinline></video>
+        <div class="ev-play-overlay">
+          <div class="ev-play-btn"><svg viewBox="0 0 24 24" width="26" height="26" fill="var(--accent)"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="ev-play-label">Play with Sound</span>
+        </div>
+      </div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Live Loop &nbsp;&mdash;&nbsp; Click to play</div>
+    </div>
+
+    <!-- Video 3: Nature_Logo -->
+    <div class="ev-grid-item" onclick="openGridPlayer('https://res.cloudinary.com/dmnvhqxav/video/upload/v1773256269/Nature_Logo_dxjlkk.mp4')" title="Click to play with sound">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview">
+        <video src="https://res.cloudinary.com/dmnvhqxav/video/upload/v1773256269/Nature_Logo_dxjlkk.mp4" muted loop playsinline></video>
+        <div class="ev-play-overlay">
+          <div class="ev-play-btn"><svg viewBox="0 0 24 24" width="26" height="26" fill="var(--accent)"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span class="ev-play-label">Play with Sound</span>
+        </div>
+      </div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Live Loop &nbsp;&mdash;&nbsp; Click to play</div>
+    </div>
+
+    <!-- Placeholder 4 -->
+    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
+      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
+      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
+      <div class="ev-grid-label"><span class="ev-dot"></span>Add Video</div>
+    </div>
+
   </div>
   <footer><div class="footer-logo">FR<span>A</span>ME</div><div class="footer-copy">&copy; 2026 Frame Edits.</div><div class="footer-social"><a href="https://www.instagram.com/noman.visuals/" target="_blank">Instagram</a></div></footer>
 </div>
@@ -1273,17 +1416,97 @@ bindHover();
 // ── EVENT VIDEO MODAL ──
 var EV_SRC="https://player.cloudinary.com/embed/?cloud_name=dmnvhqxav&public_id=0309_hlkfw2&autoplay=true&muted=false&loop=false&controls=true";
 function openEventPlayer(){
-  document.getElementById("evModalFrame").src=EV_SRC;
-  document.getElementById("evModal").classList.add("open");
+  var modal=document.getElementById("evModal");
+  var frame=document.getElementById("evModalFrame");
+  var videoEl=document.getElementById("evModalVideo");
+  frame.style.display="block"; videoEl.style.display="none";
+  frame.src=EV_SRC;
+  modal.classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function openGridPlayer(url){
+  if(!url)return;
+  var modal=document.getElementById("evModal");
+  var frame=document.getElementById("evModalFrame");
+  var videoEl=document.getElementById("evModalVideo");
+  frame.style.display="none"; frame.src="";
+  videoEl.src=url; videoEl.style.display="block";
+  videoEl.play();
+  modal.classList.add("open");
   document.body.style.overflow="hidden";
 }
 function closeEventPlayer(e){
   if(e&&e.target!==document.getElementById("evModal")&&!e.target.closest(".ev-modal-close"))return;
-  document.getElementById("evModalFrame").src="";
+  var frame=document.getElementById("evModalFrame");
+  var videoEl=document.getElementById("evModalVideo");
+  frame.src=""; videoEl.pause(); videoEl.src="";
   document.getElementById("evModal").classList.remove("open");
   document.body.style.overflow="";
 }
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeEventPlayer({target:document.getElementById("evModal")});});
+
+// ── SCROLL-TRIGGERED VIDEO AUTOPLAY ──
+// <video> tags: play/pause via IntersectionObserver
+// Featured iframe: load src on enter, clear src on leave (stops network activity)
+(function(){
+
+  // Observer for <video> elements
+  var videoObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var v = entry.target;
+      if(entry.isIntersecting){
+        v.muted = true;
+        v.play().catch(function(){});
+      } else {
+        v.pause();
+      }
+    });
+  }, {threshold: 0.25});
+
+  // Observer for featured iframe (load/unload src to stop all network/CPU)
+  var iframeObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var iframe = entry.target;
+      var dataSrc = iframe.getAttribute('data-src');
+      if(!dataSrc) return;
+      if(entry.isIntersecting){
+        if(!iframe.src || iframe.src === window.location.href){
+          iframe.src = dataSrc;
+        }
+      } else {
+        iframe.src = '';
+      }
+    });
+  }, {threshold: 0.2});
+
+  function observeAll(){
+    // Observe ALL ev-grid-preview videos + the featured loop video
+    document.querySelectorAll('.ev-grid-preview video, #evLoopFrame').forEach(function(v){
+      v.muted = true;
+      v.loop = true;
+      v.removeAttribute('autoplay');
+      v.pause();
+      videoObs.unobserve(v);
+      videoObs.observe(v);
+    });
+  }
+
+  // Pause everything when navigating away
+  function pauseAll(){
+    document.querySelectorAll('.ev-grid-preview video, #evLoopFrame').forEach(function(v){ v.pause(); });
+  }
+
+  // Wrap the router so we pause on leave, re-observe on arrive
+  var _goTo = window.goTo;
+  window.goTo = function(page, anchor){
+    pauseAll();
+    _goTo(page, anchor);
+    setTimeout(observeAll, 250);
+  };
+
+  // Run on initial load
+  observeAll();
+})();
 
 // ── LIGHTBOX ──
 document.querySelectorAll(".gallery-item").forEach(function(item){
