@@ -1432,12 +1432,8 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
       setTimeout(function(){ animating = false; }, delay + 750);
     }
 
-    // Expose for router
-    window.grInit = function(){ applyLayout(false); };
-    // Initial render only if page is visible
-    if(document.getElementById('page-graphic').classList.contains('active')){
-      applyLayout(false);
-    }
+    // Initial render
+    applyLayout(false);
 
     // Auto-shuffle every 4s
     var autoTimer = setInterval(function(){
@@ -1836,7 +1832,6 @@ function goTo(page,anchor){
   setTimeout(initReveal,100);
   setTimeout(bindHover,100);
   moveNavIndicator();
-  if(page==='graphic' && window.grInit){ setTimeout(window.grInit, 50); }
 }
 
 // ── TUBELIGHT INDICATOR ──
