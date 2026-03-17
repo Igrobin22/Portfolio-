@@ -17,13 +17,31 @@ body{background:var(--black);color:var(--white);font-family:"DM Sans",sans-serif
 #cur-ring.hov{width:60px;height:60px;border-color:#e8c97e;}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;width:100%;z-index:1000;padding:28px 60px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(8,8,8,.95),transparent);}
-.nav-toggle{display:none;}
-.logo{font-family:"Bebas Neue",cursive;font-size:2rem;letter-spacing:6px;color:var(--white);background:none;border:none;cursor:pointer!important;}
+nav{position:fixed;top:0;width:100%;z-index:1000;display:flex;justify-content:center;padding-top:20px;pointer-events:none;}
+nav>*{pointer-events:auto;}
+.nav-pill{display:flex;align-items:center;gap:4px;background:rgba(8,8,8,.55);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:5px;border-radius:9999px;box-shadow:0 8px 32px rgba(0,0,0,.45);overflow:visible;}
+.logo{font-family:"Bebas Neue",cursive;font-size:1.4rem;letter-spacing:5px;color:var(--white);background:none;border:none;cursor:pointer!important;padding:8px 22px;border-radius:9999px;transition:color .3s;line-height:1;}
 .logo span{color:var(--accent);}
-.nav-links{display:flex;gap:40px;list-style:none;}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:.78rem;letter-spacing:2.5px;text-transform:uppercase;transition:color .3s;cursor:pointer!important;}
-.nav-links a:hover,.nav-links a.active{color:var(--accent);}
+.nav-divider{width:1px;height:20px;background:rgba(255,255,255,.1);flex-shrink:0;margin:0 2px;}
+.nav-links{display:flex;gap:2px;list-style:none;position:relative;}
+.nav-links li{position:static;}
+.nav-links a{position:relative;display:block;color:rgba(176,168,164,.75);text-decoration:none;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;padding:9px 20px;border-radius:9999px;transition:color .3s;cursor:pointer!important;white-space:nowrap;z-index:1;}
+.nav-links a:hover{color:var(--white);}
+.nav-links a.active{color:var(--accent);}
+/* Sliding highlight pill behind active link */
+.nav-pill-indicator{position:absolute;top:0;height:100%;border-radius:9999px;background:rgba(232,201,126,.1);transition:left .4s cubic-bezier(.25,.46,.45,.94),width .4s cubic-bezier(.25,.46,.45,.94);pointer-events:none;z-index:0;}
+/* Tubelight glow bar — sits at top of the active link, inside the pill */
+.nav-links a.active::before{content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);width:32px;height:2px;background:var(--accent);border-radius:0 0 4px 4px;box-shadow:0 0 6px 3px rgba(232,201,126,.6),0 0 18px 8px rgba(232,201,126,.2);}
+.nav-toggle{display:none;}
+/* mobile pill */
+@media(max-width:768px){
+  nav{padding-top:14px;}
+  .nav-pill{gap:2px;padding:4px;}
+  .logo{font-size:1.2rem;padding:7px 16px;letter-spacing:4px;}
+  .nav-divider{display:none;}
+  .nav-links a{font-size:.6rem;letter-spacing:1.5px;padding:8px 12px;}
+  .nav-links a.active::before{width:22px;}
+}
 
 /* ── PAGE SYSTEM ── */
 .page{display:none;min-height:100vh;}
@@ -125,10 +143,23 @@ section{padding:120px 60px;}
 .form-textarea{resize:vertical;min-height:130px;}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);}
 .form-input::placeholder,.form-textarea::placeholder{color:var(--muted);}
-.btn-submit{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:18px 44px;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;align-self:flex-start;position:relative;overflow:hidden;transition:color .4s;cursor:pointer!important;}
-.btn-submit::before{content:"";position:absolute;inset:0;background:var(--accent);transform:translateX(-100%);transition:transform .4s cubic-bezier(.25,.46,.45,.94);z-index:-1;}
-.btn-submit:hover{color:var(--black);}
+.btn-submit{background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;width:100%;height:58px;position:relative;overflow:hidden;cursor:pointer!important;padding:0;}
+.btn-submit::before{content:"";position:absolute;inset:0;background:var(--accent);transform:translateX(-100%);transition:transform .45s cubic-bezier(.25,.46,.45,.94);z-index:0;}
 .btn-submit:hover::before{transform:translateX(0);}
+.btn-submit:hover{color:var(--black);}
+.btn-submit:active{transform:scale(0.98);}
+/* icon: starts at left:28px, moves to center on hover */
+.btn-submit .btn-icon{position:absolute;top:50%;left:28px;transform:translateY(-50%);z-index:2;display:flex;transition:left .45s cubic-bezier(.25,.46,.45,.94);}
+.btn-submit .btn-icon svg{stroke:currentColor;display:block;transition:transform .45s cubic-bezier(.25,.46,.45,.94);}
+/* text: centered, exits right on hover */
+.btn-submit .btn-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;white-space:nowrap;transition:transform .45s cubic-bezier(.25,.46,.45,.94),opacity .35s;}
+/* HOVER STATE */
+.btn-submit:hover .btn-text{transform:translate(200%,-50%);opacity:0;}
+.btn-submit:hover .btn-icon{left:calc(50% - 10px);}
+.btn-submit:hover .btn-icon svg{transform:scale(1.15);}
+/* SENDING STATE */
+.btn-submit.sending .btn-icon{left:200%;transition:left .4s cubic-bezier(.25,.46,.45,.94);}
+.btn-submit.sending .btn-text{transform:translate(-50%,-50%);opacity:1;}
 
 /* ── FOOTER ── */
 footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;background:var(--black);}
@@ -231,9 +262,10 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 
 /* Bottom corners via inner pseudo on preview */
 .ev-grid-preview{position:relative;aspect-ratio:9/16;overflow:hidden;background:#000;width:100%;border-radius:2px;
-  box-shadow:0 0 0 1px rgba(232,201,126,.35), 0 0 40px rgba(232,201,126,.07), 0 24px 60px rgba(0,0,0,.7);}
+  box-shadow:0 0 0 1px rgba(232,201,126,.35), 0 0 40px rgba(232,201,126,.07), 0 24px 60px rgba(0,0,0,.7);
+  min-height:400px;display:block;}
 /* Scale video slightly to clip any player chrome at edges */
-.ev-grid-preview video{position:absolute;top:50%;left:50%;width:102%;height:102%;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;}
+.ev-grid-preview video{position:absolute;top:50%;left:50%;width:102%;height:102%;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;display:block;}
 
 /* Glowing border sweep — same as featured */
 .ev-grid-preview::before{content:"";position:absolute;inset:-2px;border-radius:3px;background:linear-gradient(135deg,rgba(232,201,126,.7) 0%,rgba(232,201,126,0) 40%,rgba(232,201,126,0) 60%,rgba(232,201,126,.5) 100%);z-index:3;pointer-events:none;animation:evBorderGlow 3s ease-in-out infinite alternate;}
@@ -257,6 +289,36 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 /* Pulsing label under each grid video */
 .ev-grid-label{margin-top:16px;display:flex;align-items:center;gap:8px;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
 .ev-grid-label .ev-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block;animation:evDotPulse 1.8s ease-in-out infinite;}
+
+/* ── PODCAST YOUTUBE GRID ── */
+.podcast-yt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px;padding:60px 60px 120px;}
+.podcast-yt-card{display:block;text-decoration:none;cursor:pointer!important;}
+.podcast-yt-thumb{position:relative;width:100%;padding-top:56.25%;overflow:hidden;background:var(--card);border-radius:2px;
+  box-shadow:0 0 0 1px rgba(232,201,126,.35),0 0 40px rgba(232,201,126,.07),0 24px 60px rgba(0,0,0,.7);}
+.podcast-yt-thumb img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s cubic-bezier(.25,.46,.45,.94);}
+.podcast-yt-card:hover .podcast-yt-thumb img{transform:scale(1.04);}
+.podcast-yt-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(8,8,8,0);transition:background .35s;z-index:2;}
+.podcast-yt-card:hover .podcast-yt-overlay{background:rgba(8,8,8,.55);}
+.podcast-yt-play{width:64px;height:64px;border:2px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(8,8,8,.6);transform:scale(.8);opacity:0;transition:transform .35s,opacity .35s;}
+.podcast-yt-card:hover .podcast-yt-play{transform:scale(1);opacity:1;}
+.podcast-yt-label{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--white);opacity:0;transform:translateY(6px);transition:opacity .3s .05s,transform .3s .05s;}
+.podcast-yt-card:hover .podcast-yt-label{opacity:1;transform:translateY(0);}
+@media(max-width:768px){.podcast-yt-grid{grid-template-columns:1fr;padding:40px 24px 80px;gap:40px;}}
+
+/* ── YOUTUBE THUMBNAIL IN GRID ── */
+.yt-grid-item{cursor:default!important;}
+.yt-thumb-link{display:block;text-decoration:none;}
+.yt-embed-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border-radius:2px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(232,201,126,.35), 0 0 40px rgba(232,201,126,.07), 0 24px 60px rgba(0,0,0,.7);}
+.yt-embed-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:2px;}
+.yt-thumb-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s cubic-bezier(.25,.46,.45,.94);}
+.yt-thumb-link:hover .yt-thumb-img{transform:scale(1.04);}
+.yt-thumb-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(8,8,8,0);transition:background .35s;z-index:2;}
+.yt-thumb-link:hover .yt-thumb-overlay{background:rgba(8,8,8,.55);}
+.yt-play-btn{width:64px;height:64px;border:2px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(8,8,8,.6);transform:scale(.8);opacity:0;transition:transform .35s,opacity .35s;}
+.yt-thumb-link:hover .yt-play-btn{transform:scale(1);opacity:1;}
+.yt-watch-label{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--white);opacity:0;transform:translateY(6px);transition:opacity .3s .05s,transform .3s .05s;}
+.yt-thumb-link:hover .yt-watch-label{opacity:1;transform:translateY(0);}
 
 /* ── EVENT VIDEO REEL STAGE ── */
 .ev-reel-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 60px 0;position:relative;}
@@ -330,15 +392,6 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 @media(max-width:768px){
   #cur-dot,#cur-ring{display:none;}
   *{cursor:auto!important;}
-  nav{padding:20px 24px;flex-wrap:wrap;gap:12px;position:fixed;}
-  .nav-toggle{display:flex;flex-direction:column;justify-content:space-between;width:28px;height:20px;background:none;border:none;cursor:pointer!important;padding:0;z-index:200;}
-  .nav-toggle span{display:block;height:1.5px;background:var(--white);transition:all .3s;}
-  .nav-toggle.open span:nth-child(1){transform:translateY(9.25px) rotate(45deg);}
-  .nav-toggle.open span:nth-child(2){opacity:0;}
-  .nav-toggle.open span:nth-child(3){transform:translateY(-9.25px) rotate(-45deg);}
-  .nav-links{display:none;width:100%;flex-direction:column;gap:0;background:rgba(8,8,8,.98);padding:20px 0;border-top:1px solid var(--border);}
-  .nav-links.open{display:flex;}
-  .nav-links li{padding:12px 0;}
   #hero{height:65vh;padding:0 24px 50px;}
   .hero-title{font-size:clamp(3rem,14vw,5.5rem);}
   .hero-sub{font-size:.9rem;max-width:100%;}
@@ -358,7 +411,7 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
   .about-stat-num{font-size:2rem;}
   .contact-layout{grid-template-columns:1fr;gap:50px;}
   .form-row{grid-template-columns:1fr;}
-  .btn-submit{align-self:stretch;text-align:center;}
+  .btn-submit{width:100%;}
   footer{flex-direction:column;gap:16px;text-align:center;padding:30px 24px;}
   .divider{margin:0 24px;}
   .page-header,.cat-page-header{padding:100px 24px 40px;}
@@ -393,14 +446,17 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 
 <!-- ══════════════ NAV ══════════════ -->
 <nav id="mainNav">
-  <button class="logo" onclick="goTo('home')">FR<span>A</span>ME</button>
-  <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
-  <ul class="nav-links" id="navLinks">
-    <li><a onclick="goTo('portfolio')" id="nav-work">Work</a></li>
-    <li><a onclick="goTo('home','services')" id="nav-services">Services</a></li>
-    <li><a onclick="goTo('home','about')" id="nav-about">About</a></li>
-    <li><a onclick="goTo('home','contact')" id="nav-contact">Contact</a></li>
-  </ul>
+  <div class="nav-pill">
+    <button class="logo" onclick="goTo('home')">FR<span>A</span>ME</button>
+    <div class="nav-divider"></div>
+    <ul class="nav-links" id="navLinks">
+      <div class="nav-pill-indicator" id="navIndicator"></div>
+      <li><a onclick="goTo('portfolio')" id="nav-work">Work</a></li>
+      <li><a onclick="goTo('home','services')" id="nav-services">Services</a></li>
+      <li><a onclick="goTo('about')" id="nav-about">About</a></li>
+      <li><a onclick="goTo('home','contact')" id="nav-contact">Contact</a></li>
+    </ul>
+  </div>
 </nav>
 
 <!-- ══════════════ PAGE: HOME ══════════════ -->
@@ -709,7 +765,14 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
           <select id="f-service" class="form-select"><option value="" disabled selected>Select a service...</option><option>Videography</option><option>Short-Form Editing</option><option>Long-Form Editing</option><option>Graphic Design</option><option>Thumbnail Design</option><option>Podcast Shoot &amp; Edit</option><option>Logo Animation</option><option>Website Development</option><option>Other / Custom</option></select>
         </div>
         <div class="form-group"><label class="form-label">Project Details</label><textarea id="f-message" class="form-textarea" placeholder="Describe your project, timeline, and any references..."></textarea></div>
-        <button class="btn-submit" id="submitBtn">Send Message</button>
+        <button class="btn-submit" id="submitBtn">
+          <div class="btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(45deg)">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+          <span class="btn-text">Send Message</span>
+        </button>
         <div id="form-status" style="margin-top:16px;font-size:.85rem;letter-spacing:1px;display:none;"></div>
       </div>
     </div>
@@ -721,6 +784,164 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
     <div class="footer-social"><a href="https://www.instagram.com/noman.visuals/" target="_blank">Instagram</a></div>
   </footer>
 </div><!-- end page-home -->
+
+<!-- ══════════════ PAGE: ABOUT ══════════════ -->
+<div class="page" id="page-about">
+
+  <style>
+    .ab-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 60px 80px;position:relative;overflow:hidden;}
+    .ab-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 55% 60% at 80% 30%,rgba(232,201,126,.07),transparent),radial-gradient(ellipse 40% 50% at 10% 80%,rgba(192,57,43,.06),transparent);}
+    .ab-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%);}
+    .ab-tag{font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:14px;}
+    .ab-tag::before{content:"";width:28px;height:1px;background:var(--accent);}
+    .ab-name{font-family:"Bebas Neue",cursive;font-size:clamp(4.5rem,10vw,10rem);line-height:.9;letter-spacing:2px;color:var(--white);}
+    .ab-name em{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);font-size:.65em;}
+    .ab-role{font-size:.85rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:20px;}
+    .ab-hero-stats{display:flex;gap:60px;margin-top:50px;}
+    .ab-stat{display:flex;flex-direction:column;gap:6px;}
+    .ab-stat-num{font-family:"Bebas Neue",cursive;font-size:3rem;color:var(--accent);letter-spacing:2px;line-height:1;}
+    .ab-stat-lbl{font-size:.65rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);}
+    .ab-scroll-hint{position:absolute;right:60px;bottom:80px;writing-mode:vertical-rl;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:14px;}
+    .ab-scroll-hint::after{content:"";width:1px;height:50px;background:linear-gradient(to bottom,var(--accent),transparent);}
+    .ab-story{padding:120px 60px;background:var(--dark);display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
+    .ab-story-visual{position:relative;height:500px;}
+    .ab-frame{position:absolute;inset:0;background:var(--card);border:1px solid var(--border);overflow:hidden;}
+    .ab-frame-inner{width:100%;height:100%;background:linear-gradient(135deg,#1a1008 0%,#0f0f0f 60%,#0a0a0a 100%);display:flex;align-items:center;justify-content:center;}
+    .ab-frame-monogram{font-family:"Bebas Neue",cursive;font-size:10rem;color:rgba(232,201,126,.08);letter-spacing:8px;line-height:1;user-select:none;}
+    .ab-accent-line{position:absolute;bottom:-20px;right:-20px;width:140px;height:140px;border:1px solid var(--accent);}
+    .ab-badge{position:absolute;top:-20px;left:-20px;background:var(--accent);color:var(--black);padding:20px 24px;z-index:2;}
+    .ab-badge-num{font-family:"Bebas Neue",cursive;font-size:2.6rem;letter-spacing:2px;line-height:1;}
+    .ab-badge-lbl{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;margin-top:2px;}
+    .ab-story-text h2{font-family:"Bebas Neue",cursive;font-size:clamp(2rem,4vw,3.5rem);letter-spacing:1px;color:var(--white);margin-bottom:28px;line-height:1.05;}
+    .ab-story-text p{color:var(--text);font-size:.92rem;line-height:1.85;margin-bottom:18px;}
+    .ab-timeline-section{padding:120px 60px;background:var(--black);}
+    .ab-timeline-head{margin-bottom:70px;}
+    .ab-timeline{position:relative;padding-left:40px;}
+    .ab-timeline::before{content:"";position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),rgba(232,201,126,.1));}
+    .ab-tl-item{position:relative;padding:0 0 56px 40px;opacity:0;transform:translateX(-20px);transition:opacity .7s,transform .7s;}
+    .ab-tl-item.vis{opacity:1;transform:translateX(0);}
+    .ab-tl-dot{position:absolute;left:-44px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px 3px rgba(232,201,126,.3);}
+    .ab-tl-dot::before{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(232,201,126,.2);}
+    .ab-tl-year{font-family:"Bebas Neue",cursive;font-size:.8rem;letter-spacing:3px;color:var(--accent);margin-bottom:6px;}
+    .ab-tl-title{font-family:"Bebas Neue",cursive;font-size:1.6rem;letter-spacing:1px;color:var(--white);margin-bottom:8px;}
+    .ab-tl-desc{color:var(--text);font-size:.87rem;line-height:1.7;max-width:560px;}
+    .ab-skills-section{padding:120px 60px;background:var(--dark);}
+    .ab-skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-top:60px;}
+    .ab-skill-card{background:var(--card);border:1px solid var(--border);padding:36px;position:relative;overflow:hidden;transition:border-color .3s,background .3s;cursor:default;}
+    .ab-skill-card:hover{border-color:rgba(232,201,126,.25);background:#161616;}
+    .ab-skill-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.25,.46,.45,.94);}
+    .ab-skill-card:hover::before{transform:scaleY(1);}
+    .ab-skill-icon{width:44px;height:44px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:border-color .3s;}
+    .ab-skill-card:hover .ab-skill-icon{border-color:var(--accent);}
+    .ab-skill-icon svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.5;}
+    .ab-skill-name{font-family:"Bebas Neue",cursive;font-size:1.4rem;letter-spacing:1px;color:var(--white);margin-bottom:10px;}
+    .ab-skill-desc{font-size:.82rem;color:var(--text);line-height:1.6;margin-bottom:20px;}
+    .ab-skill-bar-wrap{height:2px;background:var(--border);position:relative;overflow:hidden;}
+    .ab-skill-bar{height:100%;background:linear-gradient(to right,var(--accent),rgba(232,201,126,.4));width:0%;transition:width 1.2s cubic-bezier(.25,.46,.45,.94);}
+    .ab-skill-card.vis .ab-skill-bar{width:var(--pct);}
+    .ab-skill-pct{position:absolute;right:0;top:-18px;font-size:.65rem;letter-spacing:2px;color:var(--accent);}
+    .ab-tools-section{padding:80px 60px 120px;background:var(--black);}
+    .ab-tools-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:50px;}
+    .ab-tool{display:flex;align-items:center;gap:10px;border:1px solid var(--border);padding:12px 22px;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);transition:color .3s,border-color .3s,background .3s;cursor:default;}
+    .ab-tool:hover{color:var(--accent);border-color:var(--accent);background:rgba(232,201,126,.04);}
+    .ab-tool-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+    .ab-cta{padding:100px 60px;background:var(--dark);text-align:center;position:relative;overflow:hidden;}
+    .ab-cta::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(232,201,126,.04),transparent);}
+    .ab-cta h2{font-family:"Bebas Neue",cursive;font-size:clamp(3rem,7vw,6rem);letter-spacing:2px;color:var(--white);margin-bottom:20px;position:relative;}
+    .ab-cta h2 em{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);}
+    .ab-cta p{color:var(--text);font-size:.95rem;max-width:440px;margin:0 auto 44px;line-height:1.7;position:relative;}
+    .ab-cta-btns{display:flex;gap:20px;justify-content:center;position:relative;}
+    .ab-reveal{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s;}
+    .ab-reveal.vis{opacity:1;transform:translateY(0);}
+    @media(max-width:768px){
+      .ab-hero{padding:0 24px 60px;}.ab-hero-stats{flex-wrap:wrap;gap:30px;}.ab-scroll-hint{display:none;}
+      .ab-story{grid-template-columns:1fr;gap:60px;padding:70px 24px;}.ab-story-visual{height:300px;}
+      .ab-timeline-section,.ab-skills-section,.ab-tools-section,.ab-cta{padding-left:24px;padding-right:24px;}
+      .ab-skills-grid{grid-template-columns:1fr;}.ab-cta-btns{flex-direction:column;align-items:center;}
+    }
+  </style>
+
+  <div class="ab-hero">
+    <div class="ab-hero-bg"></div>
+    <div class="ab-hero-grid"></div>
+    <div class="ab-tag">Visual Storyteller &middot; Editor &middot; Designer</div>
+    <div class="ab-name">NOMAN<br><em>Shoaib</em></div>
+    <div class="ab-role">Videography &middot; Editing &middot; Graphic Design &middot; Web Development</div>
+    <div class="ab-hero-stats">
+      <div class="ab-stat"><div class="ab-stat-num">2+</div><div class="ab-stat-lbl">Years Experience</div></div>
+      <div class="ab-stat"><div class="ab-stat-num">50+</div><div class="ab-stat-lbl">Projects Delivered</div></div>
+      <div class="ab-stat"><div class="ab-stat-num">8</div><div class="ab-stat-lbl">Services Offered</div></div>
+      <div class="ab-stat"><div class="ab-stat-num">&infin;</div><div class="ab-stat-lbl">Frames With Intent</div></div>
+    </div>
+    <div class="ab-scroll-hint">Scroll</div>
+  </div>
+
+  <div class="ab-story">
+    <div class="ab-story-visual ab-reveal">
+      <div class="ab-frame"><div class="ab-frame-inner"><div class="ab-frame-monogram">NS</div></div></div>
+      <div class="ab-accent-line"></div>
+      <div class="ab-badge"><div class="ab-badge-num">2+</div><div class="ab-badge-lbl">Years of<br>Experience</div></div>
+    </div>
+    <div class="ab-story-text ab-reveal">
+      <h2>Stories That<br>Move People.</h2>
+      <p>I&rsquo;m Noman Shoaib &mdash; a passionate visual storyteller with 2+ years of specialized experience in real estate videography editing, graphic design, and motion design.</p>
+      <p>I bring properties and brands to life through cinematic edits that capture every detail and emotion. From high-end real estate walkthroughs to bold motion graphics, I craft visuals that don&rsquo;t just look good &mdash; they sell.</p>
+      <p>Based remotely, working globally. Fast turnaround with uncompromising quality on every project.</p>
+    </div>
+  </div>
+
+  <div class="ab-timeline-section">
+    <div class="ab-timeline-head ab-reveal">
+      <div class="section-label">My Journey</div>
+      <div class="section-title">How I Got Here</div>
+    </div>
+    <div class="ab-timeline">
+      <div class="ab-tl-item"><div class="ab-tl-dot"></div><div class="ab-tl-year">2022 &mdash; The Beginning</div><div class="ab-tl-title">First Frame</div><div class="ab-tl-desc">Started with a passion for visual storytelling. Picked up a camera, opened Premiere Pro, and never looked back. Self-taught from day one &mdash; every tutorial, every project a lesson.</div></div>
+      <div class="ab-tl-item"><div class="ab-tl-dot"></div><div class="ab-tl-year">2023 &mdash; Going Deeper</div><div class="ab-tl-title">Real Estate &amp; Brand Work</div><div class="ab-tl-desc">Specialized in real estate videography and short-form content. Developed a signature cinematic style &mdash; clean color grades, purposeful transitions, and edits built to sell.</div></div>
+      <div class="ab-tl-item"><div class="ab-tl-dot"></div><div class="ab-tl-year">2024 &mdash; Expanding the Toolkit</div><div class="ab-tl-title">Motion, Design &amp; Web</div><div class="ab-tl-desc">Added graphic design, logo animation, podcast production, and web development to the offering. Full-service creative &mdash; one person, every deliverable.</div></div>
+      <div class="ab-tl-item"><div class="ab-tl-dot"></div><div class="ab-tl-year">2025 &mdash; Present</div><div class="ab-tl-title">Frame Edits</div><div class="ab-tl-desc">Operating globally under the FRAME brand. Working with real estate agencies, content creators, and businesses to deliver cinematic visuals that drive results.</div></div>
+    </div>
+  </div>
+
+  <div class="ab-skills-section">
+    <div class="ab-reveal"><div class="section-label">Expertise</div><div class="section-title">What I Do Best</div></div>
+    <div class="ab-skills-grid">
+      <div class="ab-skill-card ab-skill-reveal" style="--pct:92%"><div class="ab-skill-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><div class="ab-skill-name">Video Editing</div><div class="ab-skill-desc">Premiere Pro, DaVinci Resolve. From rough cut to final grade &mdash; narrative pacing, colour, sound design.</div><div class="ab-skill-bar-wrap"><div class="ab-skill-bar"></div><span class="ab-skill-pct">92%</span></div></div>
+      <div class="ab-skill-card ab-skill-reveal" style="--pct:88%"><div class="ab-skill-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="ab-skill-name">Motion Design</div><div class="ab-skill-desc">After Effects &mdash; logo animations, kinetic typography, transitions, and motion graphics that elevate the final cut.</div><div class="ab-skill-bar-wrap"><div class="ab-skill-bar"></div><span class="ab-skill-pct">88%</span></div></div>
+      <div class="ab-skill-card ab-skill-reveal" style="--pct:85%"><div class="ab-skill-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg></div><div class="ab-skill-name">Graphic Design</div><div class="ab-skill-desc">Photoshop, Illustrator. Thumbnails, social graphics, brand identity, and marketing materials with a bold visual language.</div><div class="ab-skill-bar-wrap"><div class="ab-skill-bar"></div><span class="ab-skill-pct">85%</span></div></div>
+      <div class="ab-skill-card ab-skill-reveal" style="--pct:80%"><div class="ab-skill-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="ab-skill-name">Web Development</div><div class="ab-skill-desc">HTML, CSS, JavaScript. Clean, animated, mobile-first portfolio and business sites &mdash; built to convert and impress.</div><div class="ab-skill-bar-wrap"><div class="ab-skill-bar"></div><span class="ab-skill-pct">80%</span></div></div>
+    </div>
+  </div>
+
+  <div class="ab-tools-section">
+    <div class="ab-reveal"><div class="section-label">Toolkit</div><div class="section-title">Tools of the Trade</div></div>
+    <div class="ab-tools-grid">
+      <div class="ab-tool"><span class="ab-tool-dot"></span>Premiere Pro</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>After Effects</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>DaVinci Resolve</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>Photoshop</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>Illustrator</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>Lightroom</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>Audition</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>HTML &amp; CSS</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>JavaScript</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>Figma</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>CapCut</div>
+      <div class="ab-tool"><span class="ab-tool-dot"></span>Frame.io</div>
+    </div>
+  </div>
+
+  <div class="ab-cta">
+    <h2>Ready to Make<br>Something <em>Great?</em></h2>
+    <p>Let&rsquo;s build visuals that move people and drive results. Every project starts with a conversation.</p>
+    <div class="ab-cta-btns">
+      <button class="btn-primary" onclick="goTo('home','contact')">Start a Project</button>
+      <button class="btn-ghost" onclick="goTo('portfolio')">View My Work</button>
+    </div>
+  </div>
+
+  <footer><div class="footer-logo">FR<span>A</span>ME</div><div class="footer-copy">&copy; 2026 Frame Edits.</div><div class="footer-social"><a href="https://www.instagram.com/noman.visuals/" target="_blank">Instagram</a></div></footer>
+</div><!-- end page-about -->
 
 <!-- ══════════════ PAGE: PORTFOLIO HUB ══════════════ -->
 <div class="page" id="page-portfolio">
@@ -1096,33 +1317,31 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
     <div class="header-title">Raw Conversations,<br><em>Cinematic</em> Results.</div>
     <p class="header-sub">Multi-camera podcast shoots and edits — professional audio cleanup, dynamic cuts, and short-form clips ready for social distribution.</p>
   </div>
-  <div class="ev-video-grid" style="margin-top:60px;padding-top:0;">
-    <div class="ev-grid-item" onclick="openGridPlayer('https://res.cloudinary.com/dmnvhqxav/video/upload/v1773495023/AHSAN_CHELSEA_RESIDENCE_cnkptt.mp4')" title="Click to play with sound">
-      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
-      <div class="ev-grid-preview">
-        <video src="https://res.cloudinary.com/dmnvhqxav/video/upload/v1773495023/AHSAN_CHELSEA_RESIDENCE_cnkptt.mp4" muted loop playsinline></video>
-        <div class="ev-play-overlay">
-          <div class="ev-play-btn"><svg viewBox="0 0 24 24" width="26" height="26" fill="var(--accent)"><polygon points="5,3 19,12 5,21"/></svg></div>
-          <span class="ev-play-label">Play with Sound</span>
+  <div class="podcast-yt-grid">
+    <a href="https://youtu.be/abeL14BGg6g" target="_blank" rel="noopener" class="podcast-yt-card">
+      <div class="podcast-yt-thumb">
+        <img src="https://img.youtube.com/vi/abeL14BGg6g/hqdefault.jpg" alt="Podcast Video 1" onerror="this.src='https://img.youtube.com/vi/abeL14BGg6g/mqdefault.jpg'">
+        <div class="podcast-yt-overlay">
+          <div class="podcast-yt-play">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="var(--accent)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+          <span class="podcast-yt-label">Watch on YouTube</span>
         </div>
       </div>
-      <div class="ev-grid-label"><span class="ev-dot"></span>Live Loop &nbsp;&mdash;&nbsp; Click to play</div>
-    </div>
-    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
-      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
-      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
-      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
-    </div>
-    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
-      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
-      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
-      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
-    </div>
-    <div class="video-item ev-grid-item" onclick="openGridPlayer('')" title="Click to play with sound" data-add="true">
-      <div class="ev-grid-corners-bl"></div><div class="ev-grid-corners-br"></div>
-      <div class="ev-grid-preview"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px dashed var(--border);"><svg viewBox="0 0 24 24" width="36" height="36" stroke="var(--muted)" fill="none" stroke-width="1"><polygon points="5,3 19,12 5,21"/></svg><span style="font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Add Video</span></div></div>
-      <div class="ev-grid-label"><span class="ev-dot"></span>Paste MP4 URL &amp; click</div>
-    </div>
+      <div class="ev-grid-label" style="margin-top:14px;"><span class="ev-dot"></span>YouTube &nbsp;&mdash;&nbsp; Click to watch</div>
+    </a>
+    <a href="https://youtu.be/IgECyO84hI8" target="_blank" rel="noopener" class="podcast-yt-card">
+      <div class="podcast-yt-thumb">
+        <img src="https://img.youtube.com/vi/IgECyO84hI8/hqdefault.jpg" alt="Podcast Video 2" onerror="this.src='https://img.youtube.com/vi/IgECyO84hI8/mqdefault.jpg'">
+        <div class="podcast-yt-overlay">
+          <div class="podcast-yt-play">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="var(--accent)"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+          <span class="podcast-yt-label">Watch on YouTube</span>
+        </div>
+      </div>
+      <div class="ev-grid-label" style="margin-top:14px;"><span class="ev-dot"></span>YouTube &nbsp;&mdash;&nbsp; Click to watch</div>
+    </a>
   </div>
   <footer><div class="footer-logo">FR<span>A</span>ME</div><div class="footer-copy">&copy; 2026 Frame Edits.</div><div class="footer-social"><a href="https://www.instagram.com/noman.visuals/" target="_blank">Instagram</a></div></footer>
 </div>
@@ -1440,8 +1659,6 @@ function hoverOff(){ring.classList.remove("hov");}
 // ── ROUTER ──
 var currentPage="home";
 function goTo(page,anchor){
-  document.getElementById("navToggle").classList.remove("open");
-  document.getElementById("navLinks").classList.remove("open");
   document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
   var target=document.getElementById("page-"+page);
   if(!target){target=document.getElementById("page-home");}
@@ -1455,15 +1672,37 @@ function goTo(page,anchor){
     },50);
   }
   document.querySelectorAll(".nav-links a").forEach(function(a){a.classList.remove("active");});
-  if(page==="portfolio"){document.getElementById("nav-work").classList.add("active");}
-  if(page==="home"){document.getElementById("nav-about").classList.remove("active");}
+  if(page==="portfolio"){setNavActive(document.getElementById("nav-work"));}
+  else if(page==="home"&&anchor==="services"){setNavActive(document.getElementById("nav-services"));}
+  else if(page==="about"){setNavActive(document.getElementById("nav-about"));}
+  else if(page==="home"&&anchor==="contact"){setNavActive(document.getElementById("nav-contact"));}
+  else if(page==="home"){setNavActive(null);}
   setTimeout(initReveal,100);
   setTimeout(bindHover,100);
+  moveNavIndicator();
 }
 
-// ── NAV HAMBURGER ──
-var navToggle=document.getElementById("navToggle"),navLinks=document.getElementById("navLinks");
-navToggle.addEventListener("click",function(){navToggle.classList.toggle("open");navLinks.classList.toggle("open");});
+// ── TUBELIGHT INDICATOR ──
+function setNavActive(el){
+  document.querySelectorAll(".nav-links a").forEach(function(a){a.classList.remove("active");});
+  if(el) el.classList.add("active");
+  moveNavIndicator();
+}
+function moveNavIndicator(){
+  var activeLink=document.querySelector(".nav-links a.active");
+  var ind=document.getElementById("navIndicator");
+  if(!activeLink||!ind){return;}
+  var listEl=document.getElementById("navLinks");
+  var listRect=listEl.getBoundingClientRect();
+  var aRect=activeLink.getBoundingClientRect();
+  ind.style.top=(aRect.top-listRect.top)+"px";
+  ind.style.left=(aRect.left-listRect.left)+"px";
+  ind.style.width=aRect.width+"px";
+  ind.style.height=aRect.height+"px";
+}
+window.addEventListener("resize",moveNavIndicator);
+// Run once after paint
+requestAnimationFrame(function(){requestAnimationFrame(moveNavIndicator);});
 
 // ── REVEAL ON SCROLL ──
 function initReveal(){
@@ -1476,6 +1715,18 @@ function initReveal(){
     el.classList.remove("visible");
     obs.observe(el);
   });
+  // About page specific reveals
+  if(currentPage==="about"){
+    var abObs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add("vis");}
+      });
+    },{threshold:.1});
+    document.querySelectorAll(".ab-reveal,.ab-tl-item,.ab-skill-reveal").forEach(function(el){
+      el.classList.remove("vis");
+      abObs.observe(el);
+    });
+  }
 }
 initReveal();
 
@@ -1527,7 +1778,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeEventPl
 // Featured iframe: load src on enter, clear src on leave (stops network activity)
 (function(){
 
-  // Observer for <video> elements
+  // Observer for <video> elements — threshold 0 so hidden-page videos register once visible
   var videoObs = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       var v = entry.target;
@@ -1538,9 +1789,9 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeEventPl
         v.pause();
       }
     });
-  }, {threshold: 0.25});
+  }, {threshold: 0});
 
-  // Observer for featured iframe (load/unload src to stop all network/CPU)
+  // Observer for featured iframe
   var iframeObs = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       var iframe = entry.target;
@@ -1554,35 +1805,47 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeEventPl
         iframe.src = '';
       }
     });
-  }, {threshold: 0.2});
+  }, {threshold: 0});
 
   function observeAll(){
-    // Observe ALL ev-grid-preview videos + the featured loop video
     document.querySelectorAll('.ev-grid-preview video, #evLoopFrame').forEach(function(v){
       v.muted = true;
       v.loop = true;
       v.removeAttribute('autoplay');
-      v.pause();
       videoObs.unobserve(v);
       videoObs.observe(v);
     });
   }
 
-  // Pause everything when navigating away
+  // Force-play all videos visible on the active page right now
+  function playVisibleOnPage(page){
+    var pageEl = document.getElementById('page-'+page);
+    if(!pageEl) return;
+    pageEl.querySelectorAll('.ev-grid-preview video').forEach(function(v){
+      v.muted = true;
+      v.loop = true;
+      v.play().catch(function(){});
+    });
+  }
+
   function pauseAll(){
     document.querySelectorAll('.ev-grid-preview video, #evLoopFrame').forEach(function(v){ v.pause(); });
   }
 
-  // Wrap the router so we pause on leave, re-observe on arrive
+  // Wrap the router so we pause on leave, re-observe and force-play on arrive
   var _goTo = window.goTo;
   window.goTo = function(page, anchor){
     pauseAll();
     _goTo(page, anchor);
-    setTimeout(observeAll, 250);
+    setTimeout(function(){
+      observeAll();
+      playVisibleOnPage(page);
+    }, 100);
   };
 
   // Run on initial load
   observeAll();
+  playVisibleOnPage('home');
 })();
 
 // ── LIGHTBOX ──
@@ -1612,21 +1875,25 @@ document.getElementById("submitBtn").addEventListener("click",function(){
     status.textContent="Please fill in all fields.";return;
   }
   var btn=document.getElementById("submitBtn");
-  btn.textContent="Sending...";btn.disabled=true;status.style.display="none";
+  var btnText=btn.querySelector('.btn-text');
+  btnText.textContent="Sending...";btn.classList.add("sending");btn.disabled=true;status.style.display="none";
   fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,email:email,service:service,message:message})})
   .then(function(){
+    // no-cors response is always opaque — if we get here, the request was sent successfully
     status.style.display="block";status.style.color="var(--accent)";
     status.textContent="Message sent! I'll get back to you within 24 hours.";
-    btn.textContent="Send Message";btn.disabled=false;
+    btn.classList.remove("sending");btn.querySelector('.btn-text').textContent="Send Message";btn.disabled=false;
     document.getElementById("f-name").value="";
     document.getElementById("f-email").value="";
     document.getElementById("f-service").selectedIndex=0;
     document.getElementById("f-message").value="";
   })
-  .catch(function(){
+  .catch(function(err){
+    // Only show error on actual network failure, not CORS opaque response
+    console.error(err);
     status.style.display="block";status.style.color="#e05555";
-    status.textContent="Something went wrong. Please try again.";
-    btn.textContent="Send Message";btn.disabled=false;
+    status.textContent="Network error. Please check your connection and try again.";
+    btn.classList.remove("sending");btn.querySelector('.btn-text').textContent="Send Message";btn.disabled=false;
   });
 });
 </script>
