@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Short Form — FRAME</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div id="cur-dot"></div>
+  <div id="cur-ring"></div>
+
+  <nav>
+    <div class="nav-pill">
+      <a href="../index.html" class="logo">FR<span>A</span>ME</a>
+      <div class="nav-divider"></div>
+      <ul class="nav-links">
+        <div class="nav-pill-indicator"></div>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="cat-page-header">
+    <a href="portfolio.html" class="back-btn">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
+      All Work
+    </a>
+    <p class="header-label">04 — Category</p>
+    <h1 class="header-title">Short <em>Form</em></h1>
+    <p class="header-sub">Reels, TikToks, and YouTube Shorts — fast-paced, scroll-stopping edits for every platform.</p>
+  </div>
+
+  <div class="upload-notice">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <p><strong>Add your work:</strong> Add Vimeo or YouTube embed URLs to the <code>data-video</code> attribute on each <code>.ev-grid-item</code> to enable the video modal.</p>
+  </div>
+
+  <!-- Reuse the portrait video grid layout for short-form (9:16 format) -->
+  <div class="ev-video-grid">
+    <div class="ev-grid-item" data-video="">
+      <div class="ev-grid-preview">
+        <div class="video-placeholder" style="aspect-ratio:9/16;">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          <span>Video Upload</span>
+          <small>9:16 · Reels / TikTok</small>
+        </div>
+        <div class="ev-grid-overlay">
+          <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        </div>
+      </div>
+      <div class="ev-grid-caption">
+        <span class="portfolio-tag">Short Form</span>
+        <span class="portfolio-name">Reel Title</span>
+      </div>
+    </div>
+
+    <div class="ev-grid-item" data-video="">
+      <div class="ev-grid-preview">
+        <div class="video-placeholder" style="aspect-ratio:9/16;">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          <span>Video Upload</span>
+          <small>9:16 · Reels / TikTok</small>
+        </div>
+        <div class="ev-grid-overlay">
+          <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        </div>
+      </div>
+      <div class="ev-grid-caption">
+        <span class="portfolio-tag">Short Form</span>
+        <span class="portfolio-name">Reel Title</span>
+      </div>
+    </div>
+
+    <div class="ev-grid-item" data-video="">
+      <div class="ev-grid-preview">
+        <div class="video-placeholder" style="aspect-ratio:9/16;">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          <span>Video Upload</span>
+          <small>9:16 · Reels / TikTok</small>
+        </div>
+        <div class="ev-grid-overlay">
+          <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        </div>
+      </div>
+      <div class="ev-grid-caption">
+        <span class="portfolio-tag">Short Form</span>
+        <span class="portfolio-name">Reel Title</span>
+      </div>
+    </div>
+
+    <div class="ev-grid-item" data-video="">
+      <div class="ev-grid-preview">
+        <div class="video-placeholder" style="aspect-ratio:9/16;">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          <span>Video Upload</span>
+          <small>9:16 · Reels / TikTok</small>
+        </div>
+        <div class="ev-grid-overlay">
+          <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        </div>
+      </div>
+      <div class="ev-grid-caption">
+        <span class="portfolio-tag">Short Form</span>
+        <span class="portfolio-name">Reel Title</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  <div class="modal" id="video-modal">
+    <div class="modal-inner">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div class="vimeo-wrap">
+        <iframe id="modal-iframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo">FR<span>A</span>ME</div>
+    <span class="footer-copy">&copy; 2025 Frame. All rights reserved.</span>
+    <div class="footer-social"><a href="#" target="_blank">Instagram</a></div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
