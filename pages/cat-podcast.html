@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Podcast — FRAME</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <div id="cur-dot"></div>
+  <div id="cur-ring"></div>
+
+  <nav>
+    <div class="nav-pill">
+      <a href="../index.html" class="logo">FR<span>A</span>ME</a>
+      <div class="nav-divider"></div>
+      <ul class="nav-links">
+        <div class="nav-pill-indicator"></div>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="cat-page-header">
+    <a href="portfolio.html" class="back-btn">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
+      All Work
+    </a>
+    <p class="header-label">02 — Category</p>
+    <h1 class="header-title">Podcast <em>Production</em></h1>
+    <p class="header-sub">Audio editing, audiograms, and full video podcast production from recording to publish-ready.</p>
+  </div>
+
+  <div class="upload-notice">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <p><strong>Add your work:</strong> Replace the Vimeo/YouTube embed URLs in the <code>data-video</code> attributes or <code>iframe src</code> values with your actual video links.</p>
+  </div>
+
+  <div class="podcast-layout">
+    <!-- Featured podcast -->
+    <div class="podcast-featured">
+      <div class="podcast-art">
+        <div class="podcast-art-placeholder">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><path d="M12 8v-2M12 18v-2"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="9"/></svg>
+          <span>Podcast Cover Art</span>
+        </div>
+      </div>
+      <div class="podcast-meta">
+        <h3>Your Podcast Name</h3>
+        <p>A short description of the podcast — what it covers, who it's for, and what makes it special.</p>
+        <div class="podcast-stats">
+          <div class="podcast-stat"><div class="podcast-stat-num">24</div><div class="podcast-stat-label">Episodes</div></div>
+          <div class="podcast-stat"><div class="podcast-stat-num">10K</div><div class="podcast-stat-label">Downloads</div></div>
+          <div class="podcast-stat"><div class="podcast-stat-num">4.9</div><div class="podcast-stat-label">Rating</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Episode list -->
+    <div class="episode-list">
+      <div class="episode-item" data-video="">
+        <div class="ep-num">01</div>
+        <div class="ep-info">
+          <div class="ep-title">Episode Title Here</div>
+          <div class="ep-duration">45:00 · Guest Name</div>
+        </div>
+        <div class="ep-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+      </div>
+      <div class="episode-item" data-video="">
+        <div class="ep-num">02</div>
+        <div class="ep-info">
+          <div class="ep-title">Episode Title Here</div>
+          <div class="ep-duration">38:22 · Guest Name</div>
+        </div>
+        <div class="ep-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+      </div>
+      <div class="episode-item" data-video="">
+        <div class="ep-num">03</div>
+        <div class="ep-info">
+          <div class="ep-title">Episode Title Here</div>
+          <div class="ep-duration">52:10 · Guest Name</div>
+        </div>
+        <div class="ep-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+      </div>
+      <div class="episode-item" data-video="">
+        <div class="ep-num">04</div>
+        <div class="ep-info">
+          <div class="ep-title">Episode Title Here</div>
+          <div class="ep-duration">41:55 · Guest Name</div>
+        </div>
+        <div class="ep-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  <div class="modal" id="video-modal">
+    <div class="modal-inner">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div class="vimeo-wrap">
+        <iframe id="modal-iframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo">FR<span>A</span>ME</div>
+    <span class="footer-copy">&copy; 2025 Frame. All rights reserved.</span>
+    <div class="footer-social"><a href="#" target="_blank">Instagram</a></div>
+  </footer>
+
+  <script src="../main.js"></script>
+</body>
+</html>
