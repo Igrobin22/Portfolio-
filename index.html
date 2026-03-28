@@ -1886,45 +1886,65 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
   overflow: visible;
 }
 
-/* ── RESPONSIVE: About / CV ── */
+/* ── RESPONSIVE: About / CV — mobile ── */
 @media (max-width: 900px) {
-  /* Stack sidebar BELOW main content on mobile */
   .cv-wrap {
     grid-template-columns: 1fr;
     display: flex;
     flex-direction: column;
     padding-top: 72px;
+    min-height: 100vh;
   }
-  /* Main content (name + experience) goes FIRST */
-  .cv-main {
-    order: 1;
-    padding: 30px 24px 20px;
-  }
-  .cv-main-name { font-size: 2.4rem; }
 
-  /* Sidebar goes SECOND — horizontal scrolling info strip */
+  /* ── SIDEBAR FIRST — profile info at top ── */
   .cv-sidebar {
-    order: 2;
+    order: 1;
     border-right: none;
-    border-top: 1px solid var(--border);
-    padding: 28px 24px 40px;
-    gap: 24px;
-    overflow-y: visible; /* all content visible, no clipping */
+    border-bottom: 1px solid var(--border);
+    padding: 28px 24px 32px;
+    gap: 28px;
+    overflow-y: visible;
+    background: #0c0c0c;
   }
 
-  /* Show avatar prominently at top of sidebar on mobile */
+  /* Profile header: photo + name side by side */
   .cv-sidebar .cv-avatar {
     display: flex;
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
   }
-  /* Show name block on mobile */
-  .cv-sidebar .cv-name-block { display: flex; }
+  .cv-sidebar .cv-name-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .cv-fullname { font-size: 1.4rem; letter-spacing: 2px; }
+  .cv-title { font-size: .58rem; letter-spacing: 2px; }
 
-  /* Cards stack vertically */
+  /* Avatar spans 1 row on left */
+  .cv-sidebar .cv-avatar { grid-column: 1; grid-row: 1; align-self: center; }
+  /* Name block next to it */
+  .cv-sidebar .cv-name-block { grid-column: 2; grid-row: 1; align-self: center; }
+  /* All other sidebar sections span full width */
+  .cv-sidebar .cv-sb-section,
+  .cv-sidebar .cv-corner-accent { grid-column: 1 / -1; }
+  /* Mobile-only summary shown in sidebar */
+  .cv-mobile-summary { grid-column: 1 / -1; display: block; font-size:.75rem; color:var(--text); line-height:1.75; border-left:2px solid var(--accent); padding-left:14px; }
+
+  /* ── MAIN CONTENT SECOND — experience cards below ── */
+  .cv-main {
+    order: 2;
+    padding: 32px 24px 40px;
+  }
+  .cv-main-name { font-size: 2.2rem; letter-spacing: 3px; }
+  .cv-main-role { font-size: .6rem; }
+
+  /* Experience cards stack vertically */
   .cv-skills-chips { flex-wrap: wrap; }
-  .cv-exp-cards { flex-direction: column; overflow-y: visible; }
-  .cv-exp-card { flex: none; width: 100%; min-width: 0; }
+  .cv-exp-cards { flex-direction: column; overflow-y: visible; gap: 16px; }
+  .cv-exp-card { flex: none; width: 100%; min-width: 0; padding: 20px 18px; }
+  .cv-exp-card-title { font-size: 1.4rem; }
 }
 </style>
 
@@ -3048,6 +3068,35 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeEventPl
 
   // Run on initial load
   observeAll();
+})();
+
+// ── AUTO-POSTER: generate Cloudinary thumbnails for all videos ──
+// Fixes blank/black frames on mobile where autoplay is blocked.
+// Converts: .../upload/v123/name.mp4 → .../upload/so_0,f_jpg,w_400/v123/name.jpg
+(function(){
+  function setPoster(v){
+    if(v.poster || !v.src) return;
+    var src = v.getAttribute('src') || v.src || '';
+    if(!src || src.indexOf('cloudinary')<0) return;
+    var poster = src
+      .replace('/upload/', '/upload/so_0,f_jpg,w_400/')
+      .replace(/\.mp4(\?.*)?$/, '.jpg')
+      .replace(/\.webm(\?.*)?$/, '.jpg')
+      .replace(/\.mov(\?.*)?$/, '.jpg');
+    v.poster = poster;
+  }
+
+  // Apply to all current videos
+  document.querySelectorAll('video').forEach(setPoster);
+
+  // Also apply when goTo() changes page (lazy pages not in DOM on load)
+  var _origGoTo = window.goTo;
+  window.goTo = function(page, anchor){
+    _origGoTo(page, anchor);
+    setTimeout(function(){
+      document.querySelectorAll('video').forEach(setPoster);
+    }, 80);
+  };
 })();
 
 // ── WEBSITE SCREENSHOTS ARRAY ──
