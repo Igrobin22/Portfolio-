@@ -555,26 +555,29 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
     padding:0;
   }
   nav .nav-pill{
-    padding:8px 18px;
-    gap:4px;
+    padding:6px 12px;
+    gap:2px;
   }
   nav .nav-links a{
-    font-size:.68rem;
-    padding:8px 12px;
-    letter-spacing:1.5px;
+    font-size:.6rem;
+    padding:7px 9px;
+    letter-spacing:1px;
   }
   nav .logo{
-    padding:5px 10px;
+    padding:4px 8px;
   }
+  /* Hide text label next to logo — only show the icon on mobile */
+  .logo-text{display:none;}
+  nav .logo img{height:26px;}
   /* Ensure pages have bottom padding so content isn't hidden behind nav */
   .page{padding-bottom:80px;}
 }
 
-/* ── MOBILE ── */
 @media(max-width:768px){
   #cur-dot,#cur-ring{display:none;}
   *{cursor:auto!important;}
-  #hero{height:65vh;padding:0 24px 100px;}
+  #hero{height:auto;min-height:90vh;padding:100px 24px 110px;}
+  .hero-eyebrow{font-size:.6rem;letter-spacing:2px;margin-bottom:14px;white-space:normal;}
   .hero-title{font-size:clamp(3rem,14vw,5.5rem);}
   .hero-sub{font-size:.9rem;max-width:100%;}
   .hero-cta-row{flex-direction:column;align-items:flex-start;gap:20px;margin-top:30px;}
