@@ -43,7 +43,7 @@ nav>*{pointer-events:auto;}
 /* Sliding highlight pill behind active link */
 .nav-pill-indicator{position:absolute;top:0;height:100%;border-radius:9999px;background:rgba(186,252,4,.1);transition:left .4s cubic-bezier(.25,.46,.45,.94),width .4s cubic-bezier(.25,.46,.45,.94);pointer-events:none;z-index:0;}
 /* Tubelight glow bar — sits at top of the active link, inside the pill */
-.nav-links a.active::before{content:"";position:absolute;top:5px;left:50%;transform:translateX(-50%);width:32px;height:2px;background:var(--accent);border-radius:0 0 4px 4px;box-shadow:0 0 6px 3px rgba(186,252,4,.6),0 0 18px 8px rgba(186,252,4,.2);}
+.nav-links a.active::before{content:"";position:absolute;top:4px;left:50%;transform:translateX(-50%);width:28px;height:2px;background:var(--accent);border-radius:0 0 4px 4px;box-shadow:0 0 8px 4px rgba(186,252,4,.75),0 0 22px 10px rgba(186,252,4,.3);z-index:5;will-change:transform;}
 .nav-toggle{display:none;}
 /* mobile pill */
 @media(max-width:768px){
@@ -576,7 +576,7 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 @media(max-width:768px){
   #cur-dot,#cur-ring{display:none;}
   *{cursor:auto!important;}
-  #hero{height:auto;min-height:100vh;padding:8vh 24px 110px;justify-content:flex-start;}
+  #hero{height:auto;padding:8vh 24px 60px;justify-content:flex-start;}
   .hero-eyebrow{font-size:.6rem;letter-spacing:2px;margin-bottom:14px;white-space:normal;}
   .hero-title{font-size:clamp(3rem,14vw,5.5rem);}
   .hero-sub{font-size:.9rem;max-width:100%;}
@@ -2021,6 +2021,57 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
   .cv-exp-cards { flex-direction: column; overflow-y: visible; gap: 16px; }
   .cv-exp-card { flex: none; width: 100%; min-width: 0; padding: 20px 18px; }
   .cv-exp-card-title { font-size: 1.4rem; }
+
+  /* ── Hide repeated name in main content (already shown in sidebar) ── */
+  .cv-main-header { display: none; }
+
+  /* ── Animated decorative lines — mobile only ── */
+  .cv-sidebar {
+    position: relative;
+    overflow: hidden;
+  }
+  /* Diagonal scan line across sidebar */
+  .cv-sidebar::after {
+    content: "";
+    position: absolute;
+    top: -40px; left: -60%;
+    width: 200%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(186,252,4,.35), transparent);
+    animation: cvDiagScan 3.5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes cvDiagScan {
+    0%   { top: -40px; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: .7; }
+    100% { top: 110%; opacity: 0; }
+  }
+  /* Glowing accent top stripe on main content */
+  .cv-main::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 24px; right: 24px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(186,252,4,.5), transparent);
+    animation: cvGlowPulse 2.5s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes cvGlowPulse {
+    from { opacity: .3; }
+    to   { opacity: 1; }
+  }
+  /* Corner bracket — top right of cv-main */
+  .cv-main::after {
+    content: "";
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 20px; height: 20px;
+    border-top: 1px solid rgba(186,252,4,.4);
+    border-right: 1px solid rgba(186,252,4,.4);
+    pointer-events: none;
+  }
 }
 </style>
 
@@ -2980,7 +3031,7 @@ function goTo(page,anchor){
   // Update hash for refresh-restore (suppress hashchange handler temporarily)
   _hashNav=true;
   location.hash=page==="home"?"":page;
-  _hashNav=false;
+  setTimeout(function(){_hashNav=false;},200); // keep guard alive past async hashchange
   window.scrollTo({top:0,behavior:"instant"});
   if(anchor){
     setTimeout(function(){
