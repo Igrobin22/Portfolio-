@@ -67,17 +67,24 @@ nav>*{pointer-events:auto;}
 #hero{height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 60px 80px;position:relative;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 40%,rgba(186,252,4,.06),transparent),radial-gradient(ellipse 40% 60% at 20% 70%,rgba(186,252,4,.07),transparent);}
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);}
-.hero-eyebrow{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;opacity:0;animation:fadeUp 1s .3s forwards;}
-.hero-title{font-family:"Bebas Neue",cursive;font-size:clamp(4rem,9vw,9rem);line-height:.95;letter-spacing:2px;color:var(--white);opacity:0;animation:fadeUp 1s .5s forwards;}
+.hero-eyebrow{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;opacity:0;}
+.hero-title{font-family:"Bebas Neue",cursive;font-size:clamp(4rem,9vw,9rem);line-height:.95;letter-spacing:2px;color:var(--white);opacity:0;}
 .hero-title em{font-family:"Playfair Display",serif;font-style:italic;color:var(--accent);font-size:.75em;}
-.hero-sub{max-width:420px;color:var(--text);font-size:.95rem;line-height:1.7;margin-top:30px;opacity:0;animation:fadeUp 1s .8s forwards;}
-.hero-cta-row{display:flex;align-items:center;gap:40px;margin-top:50px;opacity:0;animation:fadeUp 1s 1s forwards;}
+.hero-sub{max-width:420px;color:var(--text);font-size:.95rem;line-height:1.7;margin-top:30px;opacity:0;}
+.hero-cta-row{display:flex;align-items:center;gap:40px;margin-top:50px;opacity:0;}
 .btn-primary{background:var(--accent);color:var(--black);padding:16px 40px;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;border:none;text-decoration:none;display:inline-block;transition:background .3s,transform .3s;cursor:pointer!important;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));}
 .btn-primary:hover{background:var(--white);transform:translateY(-2px);}
 .btn-ghost{color:var(--muted);font-size:.78rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:4px;transition:color .3s,border-color .3s;cursor:pointer!important;background:none;border-top:none;border-left:none;border-right:none;}
 .btn-ghost:hover{color:var(--white);border-color:var(--white);}
-.hero-scroll{position:absolute;right:60px;bottom:80px;writing-mode:vertical-rl;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:16px;opacity:0;animation:fadeIn 1s 1.4s forwards;}
-.hero-scroll::after{content:"";width:1px;height:60px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scrollLine 2s 1.6s infinite;}
+.hero-scroll{position:absolute;right:60px;bottom:80px;writing-mode:vertical-rl;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:16px;opacity:0;}
+.hero-scroll::after{content:"";width:1px;height:60px;background:linear-gradient(to bottom,var(--accent),transparent);}
+/* Hero reveal — triggered after intro exits */
+.hero-animate .hero-eyebrow{animation:fadeUp .9s .05s both;}
+.hero-animate .hero-title{animation:fadeUp 1s .2s both;}
+.hero-animate .hero-sub{animation:fadeUp 1s .4s both;}
+.hero-animate .hero-cta-row{animation:fadeUp 1s .6s both;}
+.hero-animate .hero-scroll{animation:fadeIn .9s .9s both;}
+.hero-animate .hero-scroll::after{animation:scrollLine 2s 1.1s infinite;}
 
 /* ── BLUEPRINT MORPH 3D ELEMENT ── */
 #blueprint-wrap{
@@ -90,8 +97,8 @@ nav>*{pointer-events:auto;}
   pointer-events:none;
   z-index:2;
   opacity:0;
-  animation:fadeIn 1.2s 1.2s forwards;
 }
+.hero-animate #blueprint-wrap{animation:fadeIn 1.2s .3s both;}
 #blueprint-scene{
   width:100%;
   height:100%;
@@ -628,9 +635,75 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
   .upload-notice{margin:0 18px 32px;}
 }
 
+/* ══ INTRO OVERLAY ══ */
+#intro-overlay{position:fixed;inset:0;z-index:999999;background:#080808;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#intro-inner{position:relative;width:240px;height:240px;display:flex;align-items:center;justify-content:center;}
+/* Spinning orbit rings */
+.i-ring{position:absolute;border-radius:50%;pointer-events:none;}
+#i-ring-1{inset:-40px;border:1px solid rgba(186,252,4,.35);animation:iSpin 5s linear infinite;}
+#i-ring-1::before{content:"";position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:#BAFC04;box-shadow:0 0 14px 5px rgba(186,252,4,.7);}
+#i-ring-2{inset:-80px;border:1px solid rgba(186,252,4,.15);animation:iSpin 9s linear infinite reverse;}
+#i-ring-2::after{content:"";position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:rgba(186,252,4,.7);box-shadow:0 0 8px 3px rgba(186,252,4,.4);}
+#i-ring-3{inset:-115px;border:1px solid rgba(186,252,4,.06);animation:iSpin 14s linear infinite;}
+@keyframes iSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+/* Corner brackets */
+.i-corner{position:absolute;width:26px;height:26px;}
+.i-tl{top:-12px;left:-12px;border-top:2px solid #BAFC04;border-left:2px solid #BAFC04;animation:iCornerTL .55s .15s both cubic-bezier(.22,1,.36,1);}
+.i-tr{top:-12px;right:-12px;border-top:2px solid #BAFC04;border-right:2px solid #BAFC04;animation:iCornerTR .55s .2s both cubic-bezier(.22,1,.36,1);}
+.i-bl{bottom:-12px;left:-12px;border-bottom:2px solid #BAFC04;border-left:2px solid #BAFC04;animation:iCornerBL .55s .25s both cubic-bezier(.22,1,.36,1);}
+.i-br{bottom:-12px;right:-12px;border-bottom:2px solid #BAFC04;border-right:2px solid #BAFC04;animation:iCornerBR .55s .3s both cubic-bezier(.22,1,.36,1);}
+@keyframes iCornerTL{from{top:-24px;left:-24px;opacity:0;}to{top:-12px;left:-12px;opacity:1;}}
+@keyframes iCornerTR{from{top:-24px;right:-24px;opacity:0;}to{top:-12px;right:-12px;opacity:1;}}
+@keyframes iCornerBL{from{bottom:-24px;left:-24px;opacity:0;}to{bottom:-12px;left:-12px;opacity:1;}}
+@keyframes iCornerBR{from{bottom:-24px;right:-24px;opacity:0;}to{bottom:-12px;right:-12px;opacity:1;}}
+/* Logo */
+#i-logo-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;z-index:2;animation:iLogoIn .9s .35s both cubic-bezier(.22,1,.36,1);}
+@keyframes iLogoIn{from{opacity:0;transform:scale(.75);}to{opacity:1;transform:scale(1);}}
+#i-logo-img{width:90px;height:90px;object-fit:contain;}
+#i-logo-word{font-family:"Bebas Neue",cursive;font-size:1.9rem;letter-spacing:8px;color:#f0ece4;animation:iGlow 2s 1.2s ease-in-out infinite alternate;}
+@keyframes iGlow{from{text-shadow:0 0 0 rgba(186,252,4,0);}to{text-shadow:0 0 18px rgba(186,252,4,.45),0 0 40px rgba(186,252,4,.15);}}
+/* Scan line sweep */
+#i-scan{position:absolute;left:-30px;right:-30px;height:1px;background:linear-gradient(90deg,transparent,rgba(186,252,4,.7),transparent);pointer-events:none;animation:iScanMove 2.2s .7s ease-in-out infinite;}
+@keyframes iScanMove{0%{top:0;opacity:0;}8%{opacity:1;}90%{opacity:.8;}100%{top:100%;opacity:0;}}
+/* Sub label */
+#i-label{position:absolute;bottom:-52px;left:50%;transform:translateX(-50%);font-size:.5rem;letter-spacing:5px;text-transform:uppercase;color:rgba(186,252,4,.45);white-space:nowrap;animation:iFadeUp .7s 1s both;}
+@keyframes iFadeUp{from{opacity:0;transform:translateX(-50%) translateY(8px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+/* Progress bar */
+#i-bar-track{position:fixed;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,.05);z-index:2;}
+#i-bar{height:100%;width:0%;background:#BAFC04;box-shadow:0 0 10px rgba(186,252,4,.7);animation:iBarFill 3.2s .2s cubic-bezier(.4,0,.6,1) forwards;}
+@keyframes iBarFill{to{width:100%;}}
+/* Grid lines */
+#i-hline{position:fixed;top:50%;left:0;right:0;height:1px;background:rgba(186,252,4,.04);pointer-events:none;}
+#i-vline{position:fixed;left:50%;top:0;bottom:0;width:1px;background:rgba(186,252,4,.04);pointer-events:none;}
+/* Exit */
+#intro-overlay.i-exit{animation:iCurtain .65s cubic-bezier(.7,0,.3,1) forwards;}
+@keyframes iCurtain{from{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);}to{clip-path:polygon(0 0,100% 0,100% 0,0 0);}}
+
 </style>
 </head>
 <body>
+
+<!-- ══════════════ INTRO SPLASH ══════════════ -->
+<div id="intro-overlay">
+  <div id="i-hline"></div>
+  <div id="i-vline"></div>
+  <div id="intro-inner">
+    <div class="i-ring" id="i-ring-1"></div>
+    <div class="i-ring" id="i-ring-2"></div>
+    <div class="i-ring" id="i-ring-3"></div>
+    <div class="i-corner i-tl"></div>
+    <div class="i-corner i-tr"></div>
+    <div class="i-corner i-bl"></div>
+    <div class="i-corner i-br"></div>
+    <div id="i-scan"></div>
+    <div id="i-logo-wrap">
+      <img id="i-logo-img" src="logo.svg" alt="Nvisuals">
+      <div id="i-logo-word">NVISUALS</div>
+    </div>
+    <div id="i-label">Cinematic &nbsp;&middot;&nbsp; Editing &nbsp;&middot;&nbsp; Design</div>
+  </div>
+  <div id="i-bar-track"><div id="i-bar"></div></div>
+</div>
 
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
@@ -3326,6 +3399,33 @@ document.getElementById("submitBtn").addEventListener("click",function(){
     btn.classList.remove("sending");btn.querySelector('.btn-text').textContent="Send Message";btn.disabled=false;
   });
 });
+
+// ── INTRO SPLASH ──
+(function(){
+  var ov = document.getElementById('intro-overlay');
+  if(!ov) return;
+  document.body.style.overflow = 'hidden';
+
+  // Hide nav initially
+  var nav = document.getElementById('mainNav');
+  if(nav){ nav.style.opacity='0'; nav.style.transform='translateY(-20px)'; nav.style.transition='opacity .7s .3s, transform .7s .3s'; }
+
+  setTimeout(function(){
+    ov.classList.add('i-exit');
+
+    // Reveal hero elements right as curtain starts wiping up
+    var hero = document.getElementById('page-home');
+    if(hero) hero.classList.add('hero-animate');
+
+    // Slide nav down smoothly
+    if(nav){ nav.style.opacity='1'; nav.style.transform='translateY(0)'; }
+
+    setTimeout(function(){
+      ov.style.display = 'none';
+      document.body.style.overflow = '';
+    }, 680);
+  }, 3500);
+})();
 </script>
 </body>
 </html>
