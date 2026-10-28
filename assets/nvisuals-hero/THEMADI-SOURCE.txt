@@ -1,0 +1,6 @@
+Local source: C:/Users/noman/Downloads/FontsFree-Net-Themadi.ttf
+Family: Themadi
+Style: REGULAR
+PostScript name: Themadi-REGULAR
+SHA-256: 14EEDD750110E779924D401A0F5100F1308E13AB0A76A8AFB8A313190957C319
+No license/copyright fields were present in the inspected font name records. Publishing rights were not established from that metadata. This asset is currently used in a local comparison preview.

@@ -1,0 +1,11 @@
+.git
+.wrangler
+node_modules
+tools
+HERO-INTEGRATION.md
+wrangler.jsonc
+.assetsignore
+.gitignore
+.gitattributes
+package.json
+package-lock.json
