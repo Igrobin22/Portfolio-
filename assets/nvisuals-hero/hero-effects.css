@@ -120,7 +120,7 @@
 .nv-hero .experience-copy span{font-size:9px;letter-spacing:1.35px}}
 @media(prefers-reduced-motion:reduce){.nv-hero .experience-callout{transition:none}
 .nv-hero .experience-ring-spin,.nv-hero .experience-wire-runner{animation:none}}
-@media(prefers-reduced-motion:no-preference){html[data-hero-intro=pending] .nv-hero .character-layer,html[data-hero-intro=pending] .nv-hero .tool-icon picture,html[data-hero-intro=pending] .nv-hero .hero-vectors,html[data-hero-intro=pending] .nv-hero .hero-title{opacity:0}
+@media(prefers-reduced-motion:no-preference){html[data-hero-intro=pending] .nv-hero .character-layer,html[data-hero-intro=pending] .nv-hero .tool-icon picture,html[data-hero-intro=pending] .nv-hero .hero-vectors,html[data-hero-intro=pending] #hero.nv-hero .hero-title{opacity:0}
 .nv-hero[data-entrance=pending] .composition,.nv-hero[data-entrance=running] .composition{overflow:hidden}
 .nv-hero[data-entrance=pending] .hero-title,.nv-hero[data-entrance=running] .hero-title,
 .nv-hero[data-entrance=pending] .character-layer,.nv-hero[data-entrance=running] .character-layer,
