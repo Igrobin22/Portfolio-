@@ -7,7 +7,7 @@
   let headingFont,playing=!reduced.matches,visible=false,launched=false;
   const proximity=createHeroProximity(hero,{reduced}),experience=createHeroExperience(hero);
   const energy=createHeroTextEnergy(hero,title,{reduced,mode:'aura'});
-  const entrance=createHeroEntrance(hero,title,{reduced,onComplete:()=>{experience.refresh();energy.refresh();}});
+  const entrance=createHeroEntrance(hero,title,{reduced,onComplete:()=>{experience.refresh();energy.refresh();update();}});
   let resolveArtwork;
   const artworkReady=new Promise(resolve=>{resolveArtwork=resolve;});
   const rig=createHeroCharacter(canvas,{
@@ -43,18 +43,22 @@
   const iconsReady=Promise.all([...hero.querySelectorAll('.tool-icon img')].map(image=>image.decode().catch(()=>{})));
   const assetsReady=Promise.all([artworkReady,fontReady,iconsReady]);
   const splash=document.getElementById('intro-overlay');
-  let introDone=!splash||splash.classList.contains('i-exit')||splash.style.display==='none';
+  const splashHidden=()=>!splash||splash.hidden||splash.style.display==='none';
+  let introDone=splashHidden();
   function launch(){if(introDone&&visible&&!launched){launched=true;entrance.start(assetsReady);}}
   const splashObserver=new MutationObserver(()=>{
-    if(splash.classList.contains('i-exit')||splash.style.display==='none'){introDone=true;splashObserver.disconnect();update();launch();}
+    if(splashHidden()){introDone=true;splashObserver.disconnect();update();launch();}
   });
   if(splash&&!introDone)splashObserver.observe(splash,{attributes:true,attributeFilter:['class','style']});
   const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;update();launch();});
   intersection.observe(hero);
   function update(){
     const effective=playing&&visible&&introDone&&!document.hidden;
-    hero.dataset.motion=effective?'playing':'paused';
-    rig.setPlaying(effective);proximity.setPlaying(effective);energy.setPlaying(effective);entrance.setPlaying(effective);
+    // Slide cached layers first; deforming the canvas or repainting SVG strokes
+    // during that transition competes with the compositor for every frame.
+    const ambient=effective&&hero.dataset.entrance==='complete';
+    hero.dataset.motion=ambient?'playing':'paused';
+    rig.setPlaying(ambient);proximity.setPlaying(ambient);energy.setPlaying(ambient);entrance.setPlaying(effective);
     button.dataset.playing=String(playing);button.setAttribute('aria-label',playing?'Pause hero animation':'Play hero animation');
     button.setAttribute('aria-pressed',String(playing));
   }

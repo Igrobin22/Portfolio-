@@ -40,23 +40,33 @@
         if(root.dataset.heroIntro!=='pending'){complete();return;}
         try{
           const distance=Math.max(hero.clientHeight,window.innerHeight);
+          const figure=hero.querySelector('.character-layer');
+          const icons=['.icon-ps picture','.icon-ae picture','.icon-cc picture'].map(selector=>hero.querySelector(selector));
+          const vectors=hero.querySelector('.hero-vectors');
+          // Read the existing font/figure scales once, before creating any effects.
+          // Animating transform and opacity lets Chrome move cached layers.
+          const transforms=new Map([title,figure,...icons,vectors].map(element=>{
+            const transform=getComputedStyle(element).transform;
+            return [element,transform==='none'?'':transform];
+          }));
           function rise(element,delay,duration){
+            const base=transforms.get(element);
             return element.animate([
-              {translate:`0 ${distance}px`,opacity:0,offset:0},
+              {transform:`translate3d(0,${distance}px,0) ${base}`,opacity:0,offset:0},
               {opacity:1,offset:.18},
-              {translate:'0 0',opacity:1,offset:1}
-            ],{duration,delay,easing:'cubic-bezier(.16,1,.3,1)',fill:'both'});
+              {transform:`translate3d(0,0,0) ${base}`,opacity:1,offset:1}
+            ],{duration,delay,easing:'cubic-bezier(.25,.6,.3,1)',fill:'both'});
           }
           const textAnimation=rise(title,80,1450);
           animations.push(textAnimation);
-          animations.push(rise(hero.querySelector('.character-layer'),230,1600));
-          for(const [index,selector] of ['.icon-ps picture','.icon-ae picture','.icon-cc picture'].entries()){
-            animations.push(rise(hero.querySelector(selector),1150+index*170,1100));
+          animations.push(rise(figure,230,1600));
+          for(const [index,icon] of icons.entries()){
+            animations.push(rise(icon,1150+index*170,1100));
           }
           // Decorative shapes and sparks appear after the text and figure settle.
-          animations.push(hero.querySelector('.hero-vectors').animate([
-            {opacity:0,translate:'0 20px'},
-            {opacity:1,translate:'0 0'}
+          animations.push(vectors.animate([
+            {opacity:0,transform:`translate3d(0,20px,0) ${transforms.get(vectors)}`},
+            {opacity:1,transform:`translate3d(0,0,0) ${transforms.get(vectors)}`}
           ],{duration:650,delay:1850,easing:'ease-out',fill:'both'}));
           hero.dataset.entrance='running';
           hero.dataset.entranceText='sliding';

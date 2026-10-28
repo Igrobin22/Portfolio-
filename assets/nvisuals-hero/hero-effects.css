@@ -122,5 +122,9 @@
 .nv-hero .experience-ring-spin,.nv-hero .experience-wire-runner{animation:none}}
 @media(prefers-reduced-motion:no-preference){html[data-hero-intro=pending] .nv-hero .character-layer,html[data-hero-intro=pending] .nv-hero .tool-icon picture,html[data-hero-intro=pending] .nv-hero .hero-vectors,html[data-hero-intro=pending] .nv-hero .hero-title{opacity:0}
 .nv-hero[data-entrance=pending] .composition,.nv-hero[data-entrance=running] .composition{overflow:hidden}
+.nv-hero[data-entrance=pending] .hero-title,.nv-hero[data-entrance=running] .hero-title,
+.nv-hero[data-entrance=pending] .character-layer,.nv-hero[data-entrance=running] .character-layer,
+.nv-hero[data-entrance=pending] .tool-icon picture,.nv-hero[data-entrance=running] .tool-icon picture,
+.nv-hero[data-entrance=pending] .hero-vectors,.nv-hero[data-entrance=running] .hero-vectors{will-change:transform,opacity}
 .nv-hero[data-entrance=pending] .character-hotspot,.nv-hero[data-entrance=running] .character-hotspot{pointer-events:none}
 .nv-hero[data-entrance=running] .hero-title-energy{opacity:0}}
