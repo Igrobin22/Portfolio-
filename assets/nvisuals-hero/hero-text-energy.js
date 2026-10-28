@@ -11,7 +11,7 @@
     const pointer={x:0,y:0,active:false};
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
     const allowed=()=>!disposed&&!capture&&Boolean(ctx&&maskCtx)&&fine.matches;
-    const ready=()=>allowed()&&visible&&!document.hidden&&hero.dataset.font!=='loading';
+    const ready=()=>allowed()&&visible&&!document.hidden&&hero.dataset.font!=='loading'&&(!hero.dataset.entrance||hero.dataset.entrance==='complete');
     function stop(){cancelAnimationFrame(raf);raf=0;last=0;}
     function clear(){if(ctx){ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);}}
     function wake(){if(ready()&&!raf)raf=requestAnimationFrame(frame);}
