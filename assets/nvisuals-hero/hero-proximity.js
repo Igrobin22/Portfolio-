@@ -10,7 +10,7 @@
       value:{x:0,y:0,rx:0,ry:0,roll:0,strength:0},painted:[]
     }));
     const pointer={x:0,y:0,active:false};
-    let playing=false,visible=true,disposed=false,raf=0,last=0;
+    let playing=false,visible=true,disposed=false,raf=0,last=0,dirty=true,anchors=null,bounds=null;
     const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
     const allowed=()=>!disposed&&!capture&&!reduced.matches&&fine.matches;
     const running=()=>allowed()&&playing&&visible&&!document.hidden;
@@ -24,7 +24,7 @@
     }
     function wake(){if(running()&&!raf)raf=requestAnimationFrame(frame);}
     function reconcile(){
-      stop();
+      stop();dirty=true;
       if(!allowed()){
         pointer.active=false;reset();hero.dataset.proximity='disabled';return;
       }
@@ -45,17 +45,19 @@
     function frame(now){
       raf=0;
       if(!running()){reconcile();return;}
-      if(last&&now-last<1000/60-.5){wake();return;}
       const dt=last?Math.min(now-last,50):16.7;
       last=now;
       const blend=1-Math.exp(-dt/115);
-      const bounds=hero.getBoundingClientRect();
       // Read every anchor before writing styles. Remove our own offset from the
       // measured center so the mouse never chases its own displacement.
-      const anchors=targets.map(target=>{
-        const rect=target.el.getBoundingClientRect();
-        return {target,rect,cx:rect.left+rect.width/2-target.value.x,cy:rect.top+rect.height/2-target.value.y};
-      });
+      if(dirty||!anchors){
+        bounds=hero.getBoundingClientRect();
+        anchors=targets.map(target=>{
+          const rect=target.el.getBoundingClientRect();
+          return {target,rect,cx:rect.left+rect.width/2-target.value.x,cy:rect.top+rect.height/2-target.value.y};
+        });
+        dirty=false;
+      }
       let moving=false,nearby=false;
       for(const {target,rect,cx,cy} of anchors){
         const goal={x:0,y:0,rx:0,ry:0,roll:0,strength:0};
@@ -85,15 +87,16 @@
       }
       for(const target of targets)paint(target);
       hero.dataset.proximity=pointer.active&&nearby?'active':moving?'settling':'idle';
-      if(moving||(pointer.active&&nearby))wake();else last=0;
+      // CSS keeps the float moving; JavaScript can sleep once the pointer response settles.
+      if(moving)wake();else last=0;
     }
     function move(event){
       if(!['mouse','pen'].includes(event.pointerType)||event.target.closest?.('a,button,input,textarea,select')){
         leave();return;
       }
-      pointer.x=event.clientX;pointer.y=event.clientY;pointer.active=true;wake();
+      pointer.x=event.clientX;pointer.y=event.clientY;pointer.active=true;dirty=true;wake();
     }
-    function leave(){pointer.active=false;wake();}
+    function leave(){pointer.active=false;dirty=true;wake();}
     function visibility(){if(document.hidden)pointer.active=false;reconcile();}
     const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;reconcile();});
     intersection.observe(hero);

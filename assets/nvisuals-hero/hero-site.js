@@ -46,13 +46,13 @@
   let introDone=!splash||splash.classList.contains('i-exit')||splash.style.display==='none';
   function launch(){if(introDone&&visible&&!launched){launched=true;entrance.start(assetsReady);}}
   const splashObserver=new MutationObserver(()=>{
-    if(splash.classList.contains('i-exit')||splash.style.display==='none'){introDone=true;splashObserver.disconnect();launch();}
+    if(splash.classList.contains('i-exit')||splash.style.display==='none'){introDone=true;splashObserver.disconnect();update();launch();}
   });
   if(splash&&!introDone)splashObserver.observe(splash,{attributes:true,attributeFilter:['class','style']});
   const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;update();launch();});
   intersection.observe(hero);
   function update(){
-    const effective=playing&&visible&&!document.hidden;
+    const effective=playing&&visible&&introDone&&!document.hidden;
     hero.dataset.motion=effective?'playing':'paused';
     rig.setPlaying(effective);proximity.setPlaying(effective);energy.setPlaying(effective);entrance.setPlaying(effective);
     button.dataset.playing=String(playing);button.setAttribute('aria-label',playing?'Pause hero animation':'Play hero animation');
