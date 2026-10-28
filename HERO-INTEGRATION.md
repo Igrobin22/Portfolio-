@@ -30,3 +30,11 @@ From this directory, run `python -m http.server 4189 --bind 127.0.0.1` and open 
 - New JavaScript syntax and Git whitespace checks passed. Navigation and content after the hero were checked against the original source.
 
 Prepared on `codex/nvisuals-animated-hero` in a separate Git worktree based on `origin/main`. The primary checkout is preserved. Site deployment follows the repository's hosting configuration.
+
+## Cloudflare deployment configuration — 29 October 2026
+
+`wrangler.jsonc` declares the repository root as the static asset directory for the existing `portfolio` Worker. It uses the compatibility date from Cloudflare's original configuration proposal. Connected Workers Builds can override the Worker name for the second `portfolio-1` build.
+
+`.assetsignore` excludes Git metadata, local caches, development tools and deployment configuration from the published assets. The site remains a static deployment with no Worker application script or build dependency required.
+
+Before this configuration was added, `wrangler deploy --dry-run` failed with a missing Worker/script or assets entry point. With Wrangler 4.154.0, the normal dry run and a second dry run using `WRANGLER_CI_OVERRIDE_NAME=portfolio-1` both completed successfully.
