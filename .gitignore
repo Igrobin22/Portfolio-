@@ -1,2 +1,5 @@
 .wrangler/
 node_modules/
+tools/performance-baseline/
+tools/performance-candidate.html
+tools/animation-probe.js

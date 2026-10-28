@@ -38,3 +38,11 @@ Prepared on `codex/nvisuals-animated-hero` in a separate Git worktree based on `
 `.assetsignore` excludes Git metadata, local caches, development tools and deployment configuration from the published assets. The site remains a static deployment with no Worker application script or build dependency required.
 
 Before this configuration was added, `wrangler deploy --dry-run` failed with a missing Worker/script or assets entry point. With Wrangler 4.154.0, the normal dry run and a second dry run using `WRANGLER_CI_OVERRIDE_NAME=portfolio-1` both completed successfully.
+
+## Animation performance — 29 October 2026
+
+The character renderer now draws only the padded artwork region instead of the mostly transparent full composition. It keeps the original source coordinates and mesh spacing, reducing geometry from 50,400 to 16,896 triangles and the measured backing buffer from 664,092 to 197,238 pixels. Character shadows use the smaller surface as well. Motion follows each display callback instead of skipping frames unevenly on high refresh rate screens.
+
+Pointer interaction caches geometry while its spring settles and sleeps when stationary. The opening splash also suspends hero motion until the composition can be seen.
+
+`node --test tools/test-hero-renderer.mjs` passes four checks covering desktop/phone alignment, 60/75/144 Hz timing, pause/resume and pointer settling. JavaScript syntax and Git whitespace checks pass. These are rendering-work and scheduling checks, not a measured device FPS improvement: browser benchmarking was affected by background throttling, and further automated browser inspection was stopped because Chrome's current URL could not be verified.

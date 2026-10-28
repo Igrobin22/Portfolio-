@@ -4,7 +4,7 @@
   window.createHeroExperience=function(hero){
     const trigger=hero.querySelector('.character-hotspot');
     const tip=hero.querySelector('#experience-callout');
-    const canvas=hero.querySelector('#hero-character');
+    const canvas=hero.querySelector('.character-layer');
     const copy=tip.querySelector('.experience-copy');
     const ring=tip.querySelector('#experience-ring');
     const paths=[...tip.querySelectorAll('[data-experience-leader]')];
