@@ -1,0 +1,32 @@
+# Animated homepage hero
+
+The marked homepage tagline, headline, paragraph, scroll label and rotating blueprint are replaced with the approved NVISUALS composition. The existing navigation, opening splash, Work/Contact destinations and remaining page sections are retained.
+
+The hero contains the green grid, responsive heading, code-animated character, decorated app icons, floating vectors, proximity response, subtle text energy and experience callout. Themadi is used up to 700 px and Delirium above that. The text slides up 150 ms before the character; icons follow and decorative shapes appear afterward. The entrance waits for the existing opening splash. A small pause button controls the hero, and animation pauses offscreen or on other pages.
+
+The standalone preview controls and mobile experimental copy were outside the marked replacement area and are not included. The original button destinations are connected to the site's existing router.
+
+## Files
+
+- `index.html`: homepage hero markup and script/style references; obsolete blueprint markup, styling and controller removed.
+- `assets/nvisuals-hero/hero-layout.css`: hero-only responsive layout and typography.
+- `assets/nvisuals-hero/hero-effects.css`: scoped decorative, proximity, callout and entrance styles.
+- `assets/nvisuals-hero/hero-site.js`: integration with font sizing, the opening splash, visibility, and pause state.
+- Other assets in that directory are copied from the approved local prototype. Font source/license records are retained alongside the files. This local integration does not establish any new font license.
+- `tools/prepare-hero-assets.py`: refresh assets/effect styles from a supplied prototype directory without replacing an already integrated page.
+- `tools/responsive-review.html`: side-by-side phone frames for local review.
+
+## Preview
+
+From this directory, run `python -m http.server 4189 --bind 127.0.0.1` and open `http://127.0.0.1:4189/`. The mobile review is at `/tools/responsive-review.html`.
+
+## Validation — 28 October 2026
+
+- Inspected the desktop homepage and both phone frames. Both mobile layouts selected Themadi and had matching viewport/document widths (304 px and 374 px usable content inside 320/390 px frames with desktop scrollbars).
+- View Work opened the original portfolio page. The logo returned home, and Start a Project scrolled to the existing Contact form. No form was submitted.
+- Hero motion paused when navigating away or scrolling to Contact; the pause button toggled playback.
+- The experience callout opened in the phone frame and dismissed with Escape. Desktop pointer input revealed the local Soft aura effect.
+- Character, heading, icons and vector assets loaded, and the entrance reached its completed state after the original splash. The browser reported no errors or warnings.
+- New JavaScript syntax and Git whitespace checks passed. Navigation and content after the hero were checked against the original source.
+
+Prepared on `codex/nvisuals-animated-hero` in a separate Git worktree based on `origin/main`. The primary checkout is preserved. Site deployment follows the repository's hosting configuration.
