@@ -60,3 +60,13 @@ All six Node tests pass, including splash/entrance sequencing, pause/resume, pre
 The heading's default `#hero.nv-hero .hero-title` opacity rule outranked the initial hiding selector. While the splash curtain cleared, the heading appeared at its final position before the animation hid and slid it in. Matching the heading selector's ID specificity in the pending-state rule keeps it hidden until the existing animation takes over. The effect stylesheet URL is versioned to refresh cached CSS.
 
 `tools/check-hero-title-visibility.cjs` runs through Playwright CLI against the local server. It samples the real computed opacity before, throughout and for 500 ms after entry. Desktop (1600 px), mobile (390 px) and reduced-motion checks pass: zero visible frames before entry, zero opacity drops, and final opacity one. The reduced-motion view remains immediately visible. The compositor animation and timing code are unchanged.
+
+## Homepage loading and continuous motion — 31 October 2026
+
+An uncached desktop test of the live homepage downloaded about 59.3 MB, including 57.4 MB of images and 1.8 MB of media data. Hidden portfolio pages were competing with the homepage: 42 external images had eager loading, and 16 videos did not specify a preload limit. Those images now use native lazy loading and asynchronous decoding; all videos use preload none. Hero images retain their existing priority, and full-size gallery URLs and video playback handlers stay intact.
+
+The small SVG stroke runners also repainted every display frame through nested blur/drop-shadow filters. Decorative vectors now omit those parent filters and advance their normalized strokes in sub-pixel steps (roughly 26–39 updates per second depending on the existing loop duration). Their float transforms, pointer response and continuously traveling lines remain active. Character and app-icon shadows are retained.
+
+The updated local preview downloaded about 2.34 MB in the same desktop audit, with no video data requested on the homepage. At 1600 × 900 on an RTX 4060 Laptop GPU, the 95th percentile idle frame interval changed from 28.2 ms to 9.8 ms; hover changed from 30.5 ms to 8.3 ms. These are lab samples, not a guarantee for every visitor. The original 3.5-second brand splash remains an intentional part of the sequence.
+
+All six Node checks pass. `tools/check-media-loading.cjs` verifies that gallery/video downloads wait, the hero retains priority, vector lines still move, the gallery opens the original image, and clicking a video plays and closes it. The standalone prototype at port 4188 has separate older source; the integrated preview is at port 4189.
