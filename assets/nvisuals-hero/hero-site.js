@@ -4,7 +4,7 @@
   const canvas=hero.querySelector('#hero-character'),button=hero.querySelector('.nv-motion-toggle');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),mobile=matchMedia('(max-width:700px)');
   const families={themadi:'Themadi',delirium:'Delirium'};
-  let headingFont,playing=!reduced.matches,visible=false,launched=false;
+  let headingFont,playing=!reduced.matches,visible=false,launched=false,scrolling=false,scrollTimer=0;
   const proximity=createHeroProximity(hero,{reduced}),experience=createHeroExperience(hero);
   const energy=createHeroTextEnergy(hero,title,{reduced,mode:'aura'});
   const entrance=createHeroEntrance(hero,title,{reduced,onComplete:()=>{experience.refresh();energy.refresh();update();}});
@@ -42,6 +42,7 @@
   const fontReady=setFont();
   const iconsReady=Promise.all([...hero.querySelectorAll('.tool-icon img')].map(image=>image.decode().catch(()=>{})));
   const assetsReady=Promise.all([artworkReady,fontReady,iconsReady]);
+  assetsReady.then(()=>window.dispatchEvent(new Event('nvisuals:assets-ready')));
   const splash=document.getElementById('intro-overlay');
   const splashHidden=()=>!splash||splash.hidden||splash.style.display==='none';
   let introDone=splashHidden();
@@ -56,19 +57,24 @@
     const effective=playing&&visible&&introDone&&!document.hidden;
     // Slide cached layers first; deforming the canvas or repainting SVG strokes
     // during that transition competes with the compositor for every frame.
-    const ambient=effective&&hero.dataset.entrance==='complete';
+    const ambient=effective&&hero.dataset.entrance==='complete'&&!scrolling;
     hero.dataset.motion=ambient?'playing':'paused';
     rig.setPlaying(ambient);proximity.setPlaying(ambient);energy.setPlaying(ambient);entrance.setPlaying(effective);
     button.dataset.playing=String(playing);button.setAttribute('aria-label',playing?'Pause hero animation':'Play hero animation');
     button.setAttribute('aria-pressed',String(playing));
   }
   button.addEventListener('click',()=>{playing=!playing;update();});
+  function onScroll(){
+    if(!scrolling){scrolling=true;update();}
+    clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{scrolling=false;update();},140);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
   const resize=new ResizeObserver(fitTitle);resize.observe(hero.querySelector('.composition'));
   mobile.addEventListener('change',setFont);
   reduced.addEventListener('change',()=>{if(reduced.matches){playing=false;update();}});
   document.addEventListener('visibilitychange',update);
   window.addEventListener('pagehide',event=>{
-    if(!event.persisted){intersection.disconnect();splashObserver.disconnect();resize.disconnect();entrance.destroy();rig.destroy();proximity.destroy();experience.destroy();energy.destroy();}
+    if(!event.persisted){clearTimeout(scrollTimer);window.removeEventListener('scroll',onScroll);intersection.disconnect();splashObserver.disconnect();resize.disconnect();entrance.destroy();rig.destroy();proximity.destroy();experience.destroy();energy.destroy();}
   });
   update();
 })();

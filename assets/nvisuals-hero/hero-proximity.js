@@ -10,7 +10,7 @@
       value:{x:0,y:0,rx:0,ry:0,roll:0,strength:0},painted:[]
     }));
     const pointer={x:0,y:0,active:false};
-    let playing=false,visible=true,disposed=false,raf=0,last=0,dirty=true,anchors=null,bounds=null;
+    let playing=false,visible=true,disposed=false,raf=0,last=0,dirty=true,anchors=null,bounds=null,nextGeometryRead=0;
     const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
     const allowed=()=>!disposed&&!capture&&!reduced.matches&&fine.matches;
     const running=()=>allowed()&&playing&&visible&&!document.hidden;
@@ -24,7 +24,7 @@
     }
     function wake(){if(running()&&!raf)raf=requestAnimationFrame(frame);}
     function reconcile(){
-      stop();dirty=true;
+      stop();dirty=true;nextGeometryRead=0;
       if(!allowed()){
         pointer.active=false;reset();hero.dataset.proximity='disabled';return;
       }
@@ -50,13 +50,15 @@
       const blend=1-Math.exp(-dt/115);
       // Read every anchor before writing styles. Remove our own offset from the
       // measured center so the mouse never chases its own displacement.
-      if(dirty||!anchors){
+      // Float drift is only a few pixels per second. Refresh anchors at most
+      // four times a second while input moves; spring updates remain per-frame.
+      if(!anchors||(dirty&&now>=nextGeometryRead)){
         bounds=hero.getBoundingClientRect();
         anchors=targets.map(target=>{
           const rect=target.el.getBoundingClientRect();
           return {target,rect,cx:rect.left+rect.width/2-target.value.x,cy:rect.top+rect.height/2-target.value.y};
         });
-        dirty=false;
+        dirty=false;nextGeometryRead=now+250;
       }
       let moving=false,nearby=false;
       for(const {target,rect,cx,cy} of anchors){
@@ -96,16 +98,17 @@
       }
       pointer.x=event.clientX;pointer.y=event.clientY;pointer.active=true;dirty=true;wake();
     }
-    function leave(){pointer.active=false;dirty=true;wake();}
+    function leave(){if(!pointer.active)return;pointer.active=false;wake();}
+    function invalidate(){dirty=true;nextGeometryRead=0;leave();}
     function visibility(){if(document.hidden)pointer.active=false;reconcile();}
     const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;reconcile();});
     intersection.observe(hero);
-    const resize=new ResizeObserver(leave);resize.observe(hero);
+    const resize=new ResizeObserver(invalidate);resize.observe(hero);
     hero.addEventListener('pointermove',move,{passive:true});
     hero.addEventListener('pointerleave',leave,{passive:true});
     hero.addEventListener('pointercancel',leave,{passive:true});
     window.addEventListener('blur',leave);
-    window.addEventListener('scroll',leave,{passive:true,capture:true});
+    window.addEventListener('scroll',invalidate,{passive:true,capture:true});
     document.addEventListener('visibilitychange',visibility);
     fine.addEventListener('change',reconcile);reduced.addEventListener('change',reconcile);
     reconcile();
@@ -114,7 +117,7 @@
       destroy(){
         disposed=true;stop();reset();intersection.disconnect();resize.disconnect();
         hero.removeEventListener('pointermove',move);hero.removeEventListener('pointerleave',leave);hero.removeEventListener('pointercancel',leave);
-        window.removeEventListener('blur',leave);window.removeEventListener('scroll',leave,true);
+        window.removeEventListener('blur',leave);window.removeEventListener('scroll',invalidate,true);
         document.removeEventListener('visibilitychange',visibility);
         fine.removeEventListener('change',reconcile);reduced.removeEventListener('change',reconcile);
         delete hero.dataset.proximity;

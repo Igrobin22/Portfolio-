@@ -19,16 +19,27 @@
     function measure(){
       const rect=title.getBoundingClientRect(),w=title.offsetWidth,h=title.offsetHeight;
       if(!rect.width||!rect.height||!w||!h)return null;
-      const dpr=Math.min(devicePixelRatio||1,2),style=getComputedStyle(title);
-      canvas.width=mask.width=Math.max(1,Math.round(w*dpr));canvas.height=mask.height=Math.max(1,Math.round(h*dpr));
-      maskCtx.setTransform(dpr,0,0,dpr,0,0);
-      maskCtx.font=style.fontStyle+' '+style.fontWeight+' '+style.fontSize+' '+style.fontFamily;
-      maskCtx.textAlign='center';maskCtx.textBaseline='alphabetic';
+      const style=getComputedStyle(title),sx=rect.width/w,sy=rect.height/h;
+      const r=clamp(hero.clientWidth*.065,54,90),pad=r+4,size=pad*2;
+      const pixels=Math.ceil(size*Math.min(devicePixelRatio||1,2)),dpr=pixels/size;
+      // Only allocate the small patch around the pointer, including its text mask.
+      canvas.width=mask.width=canvas.height=mask.height=pixels;
+      canvas.style.inset='0 auto auto 0';canvas.style.width=size/sx+'px';canvas.style.height=size/sy+'px';
+      const font=style.fontStyle+' '+style.fontWeight+' '+style.fontSize+' '+style.fontFamily;
+      maskCtx.font=font;
       const text=title.querySelector('.hero-title-base').textContent,m=maskCtx.measureText(text);
       const ascent=m.fontBoundingBoxAscent??m.actualBoundingBoxAscent,descent=m.fontBoundingBoxDescent??m.actualBoundingBoxDescent;
-      // This is the same centered line-box baseline used by the HTML text.
-      maskCtx.fillStyle='#fff';maskCtx.fillText(text,w/2,h/2+(ascent-descent)/2);
-      return {rect,kx:canvas.width/rect.width,ky:canvas.height/rect.height,r:clamp(hero.clientWidth*.065,54,90)};
+      return {rect,w,sx,sy,r,pad,size,dpr,font,text,baseline:h/2+(ascent-descent)/2,maskX:null,maskY:null};
+    }
+    function positionPatch(){
+      const g=geometry,x=pointer.x-g.rect.left-g.pad,y=pointer.y-g.rect.top-g.pad;
+      if(g.maskX===x&&g.maskY===y)return;
+      g.maskX=x;g.maskY=y;
+      canvas.style.transform='translate3d('+x/g.sx+'px,'+y/g.sy+'px,0)';
+      maskCtx.setTransform(1,0,0,1,0,0);maskCtx.clearRect(0,0,mask.width,mask.height);
+      maskCtx.setTransform(g.dpr*g.sx,0,0,g.dpr*g.sy,0,0);
+      maskCtx.font=g.font;maskCtx.textAlign='center';maskCtx.textBaseline='alphabetic';
+      maskCtx.fillStyle='#fff';maskCtx.fillText(g.text,g.w/2-x/g.sx,g.baseline-y/g.sy);
     }
     function halo(x,y,r,alpha){
       const gradient=ctx.createRadialGradient(x,y,0,x,y,r);
@@ -38,8 +49,9 @@
     }
     function draw(){
       clear();if(!geometry||opacity<=0)return;
-      const {rect,kx,ky,r}=geometry,x=pointer.x-rect.left,y=pointer.y-rect.top;
-      ctx.save();ctx.setTransform(kx,0,0,ky,0,0);
+      positionPatch();
+      const {dpr,r,pad}=geometry,x=pad,y=pad;
+      ctx.save();ctx.setTransform(dpr,0,0,dpr,0,0);
       ctx.beginPath();ctx.rect(x-r-4,y-r-4,r*2+8,r*2+8);ctx.clip();ctx.globalAlpha=opacity;
       if(selected==='aura'){
         halo(x,y,r,.29);halo(x+Math.sin(phase*.6)*8,y+Math.cos(phase*.7)*9,r*.55,.10);
@@ -70,8 +82,7 @@
     }
     function frame(now){
       raf=0;if(!ready()){refresh();return;}
-      if(last&&now-last<1000/30-1){wake();return;}
-      const dt=last?Math.min(now-last,60):33;last=now;
+      const dt=last?Math.min(now-last,60):16.7;last=now;
       geometry??=measure();if(!geometry){refresh();return;}
       const r=geometry.rect,inside=pointer.x>=r.left&&pointer.x<=r.right&&pointer.y>=r.top&&pointer.y<=r.bottom;
       const target=pointer.active&&inside?1:0;

@@ -27,6 +27,8 @@ body{background:var(--black);color:var(--white);font-family:"DM Sans",sans-serif
 #cur-ring{width:36px;height:36px;border:1px solid rgba(186,252,4,.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99998;transform:translate(-50px,-50px);will-change:transform;transition:width .3s,height .3s,border-color .3s;}
 #cur-ring.hov{width:60px;height:60px;border-color:#BAFC04;}
 
+@media (hover:none),(pointer:coarse){*{cursor:auto!important}#cur-dot,#cur-ring{display:none}}
+
 /* ── NAV ── */
 nav{position:fixed;top:0;width:100%;z-index:1000;display:flex;justify-content:center;padding-top:20px;pointer-events:none;}
 nav>*{pointer-events:auto;}
@@ -530,11 +532,11 @@ footer{border-top:1px solid var(--border);padding:40px 60px;display:flex;justify
 #i-scan{position:absolute;left:-30px;right:-30px;height:1px;background:linear-gradient(90deg,transparent,rgba(186,252,4,.7),transparent);pointer-events:none;animation:iScanMove 2.2s .7s ease-in-out infinite;}
 @keyframes iScanMove{0%{top:0;opacity:0;}8%{opacity:1;}90%{opacity:.8;}100%{top:100%;opacity:0;}}
 /* Sub label */
-#i-label{position:absolute;bottom:-52px;left:50%;transform:translateX(-50%);font-size:.5rem;letter-spacing:5px;text-transform:uppercase;color:rgba(186,252,4,.45);white-space:nowrap;animation:iFadeUp .7s 1s both;}
+#i-label{position:absolute;bottom:-52px;left:50%;transform:translateX(-50%);font-size:.5rem;letter-spacing:5px;text-transform:uppercase;color:rgba(186,252,4,.45);white-space:nowrap;animation:iFadeUp .45s .4s both;}
 @keyframes iFadeUp{from{opacity:0;transform:translateX(-50%) translateY(8px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 /* Progress bar */
 #i-bar-track{position:fixed;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,.05);z-index:2;}
-#i-bar{height:100%;width:0%;background:#BAFC04;box-shadow:0 0 10px rgba(186,252,4,.7);animation:iBarFill 3.2s .2s cubic-bezier(.4,0,.6,1) forwards;}
+#i-bar{height:100%;width:0%;background:#BAFC04;box-shadow:0 0 10px rgba(186,252,4,.7);animation:iBarFill 1.05s .15s cubic-bezier(.4,0,.6,1) forwards;}
 @keyframes iBarFill{to{width:100%;}}
 /* Grid lines */
 #i-hline{position:fixed;top:50%;left:0;right:0;height:1px;background:rgba(186,252,4,.04);pointer-events:none;}
@@ -2756,25 +2758,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
   <div class="lb-counter" id="lbCounter"></div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ── CURSOR ──
-var dot=document.getElementById("cur-dot"),ring=document.getElementById("cur-ring"),mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
-
-document.addEventListener("mousemove",function(e){
-  mx=e.clientX; my=e.clientY;
-  dot.style.transform="translate("+(mx-5)+"px,"+(my-5)+"px)";
-});
-
-(function loop(){
-  rx+=(mx-rx)*0.12;
-  ry+=(my-ry)*0.12;
-  ring.style.transform="translate("+(rx-18)+"px,"+(ry-18)+"px)";
-  requestAnimationFrame(loop);
-})();
-
-function hoverOn(){ring.classList.add("hov");}
-function hoverOff(){ring.classList.remove("hov");}
-
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/nvisuals-hero/site-cursor.js?v=interaction-1"></script><script>
 // ── ROUTER ──
 var currentPage="home";
 var _hashNav=false; // used by hash-routing to suppress re-entrant hashchange
@@ -3141,7 +3125,19 @@ document.getElementById("submitBtn").addEventListener("click",function(){
   var nav = document.getElementById('mainNav');
   if(nav){ nav.style.opacity='0'; nav.style.transform='translateY(-20px)'; nav.style.transition='opacity .7s .3s, transform .7s .3s'; }
 
-  setTimeout(function(){
+  var introStarted=performance.now(),introExited=false,readyTimer;
+  var fallbackTimer=setTimeout(exitIntro,3500);
+  function assetsReady(){
+    clearTimeout(fallbackTimer);
+    readyTimer=setTimeout(exitIntro,Math.max(0,1200-(performance.now()-introStarted)));
+  }
+  window.addEventListener('nvisuals:assets-ready',assetsReady,{once:true});
+  function exitIntro(){
+    if(introExited)return;
+    introExited=true;clearTimeout(fallbackTimer);clearTimeout(readyTimer);
+    window.removeEventListener('nvisuals:assets-ready',assetsReady);
+    var bar=document.getElementById('i-bar');
+    if(bar){bar.style.animation='none';bar.style.width='100%';}
     ov.classList.add('i-exit');
 
     // Reveal hero elements right as curtain starts wiping up
@@ -3155,14 +3151,14 @@ document.getElementById("submitBtn").addEventListener("click",function(){
       ov.style.display = 'none';
       document.body.style.overflow = '';
     }, 680);
-  }, 3500);
+  }
 })();
 </script>
 <script src="assets/nvisuals-hero/hero-engine.js?v=performance-1"></script>
-<script src="assets/nvisuals-hero/hero-proximity.js?v=performance-1"></script>
+<script src="assets/nvisuals-hero/hero-proximity.js?v=interaction-1"></script>
 <script src="assets/nvisuals-hero/hero-experience.js?v=performance-1"></script>
-<script src="assets/nvisuals-hero/hero-text-energy.js?v=entrance-2"></script>
+<script src="assets/nvisuals-hero/hero-text-energy.js?v=interaction-1"></script>
 <script src="assets/nvisuals-hero/hero-entrance.js?v=entrance-2"></script>
-<script src="assets/nvisuals-hero/hero-site.js?v=entrance-2"></script>
+<script src="assets/nvisuals-hero/hero-site.js?v=interaction-1"></script>
 </body>
 </html>
