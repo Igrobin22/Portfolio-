@@ -32,7 +32,7 @@
 .nv-hero .float-vector .vector-outline{opacity:.24;stroke-dasharray:none;stroke-dashoffset:0}
 .nv-hero .float-vector .vector-runner{
   stroke-dasharray:26 74;stroke-dashoffset:0;stroke-linecap:round;
-  /* Sub-pixel steps keep these tiny strokes moving without repainting at 165 Hz. */
+  /* Short stroke steps keep the lines moving without repainting at 165 Hz. */
   animation:vector-travel var(--line-duration,4.2s) steps(126,end) infinite;
   animation-delay:var(--delay,0s);
 }
