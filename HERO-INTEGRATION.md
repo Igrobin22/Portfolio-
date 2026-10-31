@@ -70,3 +70,15 @@ The small SVG stroke runners also repainted every display frame through nested b
 The updated local preview downloaded about 2.34 MB in the same desktop audit, with no video data requested on the homepage. At 1600 × 900 on an RTX 4060 Laptop GPU, the 95th percentile idle frame interval changed from 28.2 ms to 9.8 ms; hover changed from 30.5 ms to 8.3 ms. These are lab samples, not a guarantee for every visitor. The original 3.5-second brand splash remains an intentional part of the sequence.
 
 All six Node checks pass. `tools/check-media-loading.cjs` verifies that gallery/video downloads wait, the hero retains priority, vector lines still move, the gallery opens the original image, and clicking a video plays and closes it. The standalone prototype at port 4188 has separate older source; the integrated preview is at port 4189.
+
+## Full interaction update — 31 October 2026
+
+The hover canvas and its glyph mask now cover only the pointer's small local region: 188 × 188 pixels at desktop DPR 1, capped at 376 × 376 at higher density. It follows display callbacks, preserves the heading's transformed glyph alignment, and caches the mask while stationary. Aura, wisps and dust remain available in the prototype.
+
+The custom cursor coalesces pointer input into one display callback and stops scheduling once its ring settles. Its follow time is independent of refresh rate, and the ring stays centered when its hover diameter changes. Touch devices use the native cursor behavior. Proximity geometry reads are limited to four updates per second during sustained pointer input; its visible spring still updates every frame. Entering controls no longer wakes an idle proximity loop.
+
+Ambient hero rendering pauses while the page scrolls, resumes 140 ms after input settles, and stays paused offscreen. The brand splash exits when fonts/artwork/icons are ready, after a 1.2-second minimum; the 3.5-second timer remains a failure fallback. The original hero slide durations and text's 150 ms lead are retained.
+
+The standalone prototype at port 4188 is now synchronized with the tight renderer, cached proximity geometry, bounded hover effect and compositor entrance. Its original source is preserved in `cape-animation/references/performance-sync-20261031`. Its existing layout and font/effect controls remain available.
+
+Ten Node tests pass, including cursor idle scheduling, sustained pointer geometry budget, readiness/fallback timing and scrolling suspension. Browser checks cover desktop DPR 1/2, touch emulation, all three prototype energy modes, pause/resume during scrolling, offscreen suspension and heading visibility. Hover screenshots were inspected. Local hero entry began around 2.4 seconds after navigation, versus roughly 5.3 seconds in the earlier live probe; this includes local/network differences and is not a universal load-time guarantee. CPU-throttled stress runs still show frame stalls, so these checks do not guarantee a fixed FPS on every device or under heavy system load.

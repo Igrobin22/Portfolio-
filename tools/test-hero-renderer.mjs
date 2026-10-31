@@ -89,5 +89,11 @@ test('pointer response settles without a permanent RAF loop or repeated geometry
   assert.equal(element.dataset.near,'near');assert.ok(reads<=3,'geometry should be cached during settling');
   listeners.get('pointermove')(event(800,500));settle();
   assert.ok(Math.abs(parseFloat(styles['--near-x']))<.01);assert.equal(element.dataset.near,'rest');
+  const previousReads=reads;
+  for(let index=0;index<144;index++){
+    listeners.get('pointermove')(event(130+Math.sin(index*.1)*40,130));
+    const pending=[...frames.values()];frames.clear();time+=1000/144;pending.forEach(callback=>callback(time));
+  }
+  assert.ok(reads-previousReads<10,'sustained pointer input must not measure geometry every display frame');
   response.destroy();assert.equal(frames.size,0);
 });

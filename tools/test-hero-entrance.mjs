@@ -19,7 +19,9 @@ test('the splash and slide finish before ambient animation starts',async()=>{
   const document={hidden:false,getElementById:id=>id==='hero'?hero:splash,
     fonts:{load:()=>Promise.resolve()},addEventListener:(name,fn)=>listeners.set(name,fn),
     createElement:()=>({getContext:()=>({measureText:()=>({width:800,actualBoundingBoxLeft:400,actualBoundingBoxRight:400,actualBoundingBoxAscent:500,actualBoundingBoxDescent:0})})})};
-  const context={document,window:{addEventListener(){}},matchMedia:()=>media,
+  const scrollTimers=new Map();let timerId=0;
+  const context={document,window:{addEventListener:(name,fn)=>listeners.set('window:'+name,fn)},matchMedia:()=>media,
+    setTimeout:fn=>{scrollTimers.set(++timerId,fn);return timerId;},clearTimeout:id=>scrollTimers.delete(id),
     createHeroProximity:()=>makeController('proximity'),createHeroExperience:()=>makeController('experience'),
     createHeroTextEnergy:()=>makeController('energy'),createHeroCharacter:()=>makeController('rig'),
     createHeroEntrance:(_,__,options)=>{
@@ -41,6 +43,8 @@ test('the splash and slide finish before ambient animation starts',async()=>{
   complete();
   for(const name of ['rig','proximity','energy'])assert.equal(states[name],true);
   assert.equal(hero.dataset.motion,'playing');
+  listeners.get('window:scroll')();assert.equal(states.rig,false);assert.equal(states.entrance,true);
+  [...scrollTimers.values()].forEach(fn=>fn());scrollTimers.clear();assert.equal(states.rig,true);
   listeners.get('click')();assert.equal(states.rig,false);
   listeners.get('click')();assert.equal(states.rig,true);assert.equal(starts,1);
   document.hidden=true;listeners.get('visibilitychange')();assert.equal(states.rig,false);
