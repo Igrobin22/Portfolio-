@@ -5,11 +5,10 @@
   width:clamp(12px,var(--size),54px);height:auto;aspect-ratio:1;
   color:#bafc04;overflow:visible;opacity:var(--opacity,.62);
   transform:translate(-50%,-50%) rotate(var(--angle,0deg));
-  filter:drop-shadow(0 3px 5px #0009) drop-shadow(0 0 7px #bafc0420);
   animation:vector-float var(--duration,13s) ease-in-out infinite;
   animation-delay:var(--delay,0s);
 }
-.nv-hero .vector-far{--layer:0;--opacity:.32;filter:blur(.35px)}
+.nv-hero .vector-far{--layer:0;--opacity:.32}
 .nv-hero .vector-front{--layer:4;--opacity:.8}
 .nv-hero .vector-crystal{--x:29%;--y:15%;--size:3.3cqw;--angle:18deg;--duration:12.6s;--delay:-4.1s;--dx:9px;--dy:-13px}
 .nv-hero .vector-ring{--x:7%;--y:41%;--size:3cqw;--angle:-15deg;--duration:16s;--delay:-9s;--dx:-6px;--dy:11px}
@@ -33,7 +32,8 @@
 .nv-hero .float-vector .vector-outline{opacity:.24;stroke-dasharray:none;stroke-dashoffset:0}
 .nv-hero .float-vector .vector-runner{
   stroke-dasharray:26 74;stroke-dashoffset:0;stroke-linecap:round;
-  animation:vector-travel var(--line-duration,4.2s) linear infinite;
+  /* Short stroke steps keep the lines moving without repainting at 165 Hz. */
+  animation:vector-travel var(--line-duration,4.2s) steps(126,end) infinite;
   animation-delay:var(--delay,0s);
 }
 .nv-hero .vector-crystal,.nv-hero .vector-prism{--line-duration:4.4s}
