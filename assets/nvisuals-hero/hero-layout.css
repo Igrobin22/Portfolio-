@@ -6,6 +6,9 @@
 .nv-hero .composition{position:absolute;isolation:isolate;left:50%;top:50%;width:100%;max-width:1600px;aspect-ratio:800/450;transform:translate(-50%,-50%)}
 #hero.nv-hero .hero-title{position:absolute;z-index:1;left:8.5%;width:83%;height:66%;margin:0;display:flex;align-items:center;justify-content:center;white-space:nowrap;font-family:Delirium,'Arial Narrow',Impact,sans-serif;font-size:41cqw;font-weight:400;font-style:normal;font-synthesis:none;line-height:1;letter-spacing:0;color:#fff;opacity:1;animation:none;transform-origin:center;user-select:none;text-shadow:0 clamp(3px,.6cqw,9px) clamp(8px,1.6cqw,24px) #0006}
 .nv-hero .hero-title-base{display:block}
+@supports (background-clip:text) or (-webkit-background-clip:text){
+.nv-hero .hero-title-base{background-image:linear-gradient(180deg,#fff 0%,#fff 25%,#e1e1de 58%,#a6a6a0 100%);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:none}
+}
 .nv-hero .hero-title-energy{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .nv-hero[data-font=loading] .hero-title{visibility:hidden}
 .nv-hero .character-layer{position:absolute;z-index:2;inset:0;pointer-events:none;transform:scale(.78);transform-origin:50% 50%;--character-shadow:drop-shadow(0 clamp(2px,.35cqw,5px) clamp(2px,.4cqw,6px) #000a) drop-shadow(0 clamp(8px,1.7cqw,24px) clamp(7px,1.4cqw,20px) #000a)}

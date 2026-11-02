@@ -1,0 +1,25 @@
+/* Tailwind utilities are prefixed. Existing site typography/reset stay intact. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+@import "tailwindcss/utilities.css" layer(utilities) prefix(tw);
+@source "../components";
+@source "../src";
+
+.portfolio-folder-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:46px 28px;align-items:start;margin:0 auto;max-width:1350px;padding:24px 0 66px;isolation:isolate;overflow:visible}
+.portfolio-folder-card{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;overflow:visible}
+.portfolio-folder-card:has(.gf-root[data-open]){z-index:3}
+.portfolio-folder-card .gf-title{font-family:"Bebas Neue",Impact,sans-serif;font-size:27px;font-weight:400;line-height:1.05;letter-spacing:.8px;white-space:normal;text-transform:uppercase}
+.portfolio-folder-card .gf-meta{font-family:"DM Sans",sans-serif;font-size:11px;letter-spacing:1.2px;text-transform:uppercase}
+.portfolio-folder-card .gf-label{max-width:264px}
+.portfolio-folder-caption{display:flex;align-items:center;justify-content:space-between;gap:18px;width:calc(100% - 34px);max-width:340px;margin-top:23px;padding:0 3px}
+.portfolio-folder-num{font-family:"Bebas Neue",sans-serif;font-size:13px;letter-spacing:2px;color:#bafc04}
+.portfolio-folder-link{display:inline-flex;gap:8px;align-items:center;font-family:"DM Sans",sans-serif;font-size:11px;line-height:1.4;letter-spacing:1px;text-transform:uppercase;color:#b8b9ad;text-decoration:none;min-height:32px;border-radius:3px;transition:color .2s}
+.portfolio-folder-link:hover{color:#bafc04}.portfolio-folder-link:focus-visible{outline:2px solid #bafc04;outline-offset:5px}
+.portfolio-folder-link svg{width:15px;height:15px;stroke-width:1.5}
+.portfolio-folder-card .gf-root:focus-within~.portfolio-folder-caption .portfolio-folder-link{color:#bafc04}
+.portfolio-folder-hint{font-family:"DM Sans",sans-serif;font-size:11px;letter-spacing:1px;color:#92988a;text-align:center;line-height:1.7;margin:0 0 30px}
+.portfolio-folder-card .gf-root[data-open] .gf-sheet{pointer-events:auto}
+.portfolio-folder-card .gf-root:not([data-open]) .gf-sheet{pointer-events:none}
+@media(max-width:1100px){.portfolio-folder-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:42px 24px}}
+@media(max-width:700px){.portfolio-folder-grid{grid-template-columns:minmax(0,1fr);gap:38px;padding:6px 0 46px}.portfolio-folder-caption{margin-top:18px}.portfolio-folder-link{min-height:44px}.portfolio-folder-hint{font-size:10px;margin-bottom:12px;letter-spacing:.6px}}
+@media(prefers-reduced-motion:reduce){.portfolio-folder-link{transition:none}}
