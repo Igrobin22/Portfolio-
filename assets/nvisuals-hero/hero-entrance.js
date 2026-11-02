@@ -60,8 +60,9 @@
           const textAnimation=rise(title,80,1450);
           animations.push(textAnimation);
           animations.push(rise(figure,230,1600));
+          // Keep the tools close behind the figure, with a small stagger.
           for(const [index,icon] of icons.entries()){
-            animations.push(rise(icon,1150+index*170,1100));
+            animations.push(rise(icon,380+index*80,1100));
           }
           // Decorative shapes and sparks appear after the text and figure settle.
           animations.push(vectors.animate([

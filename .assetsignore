@@ -9,3 +9,13 @@ wrangler.jsonc
 .gitattributes
 package.json
 package-lock.json
+
+components
+src
+styles
+lib
+hooks
+tsconfig.json
+vite.config.ts
+components.json
+FOLDER-CARDS.md
