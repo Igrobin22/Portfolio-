@@ -26,22 +26,17 @@
       const scale=rect.height/Math.max(941,1672/(rect.width/rect.height));
       const x=rect.left-bounds.left+rect.width/2+(834-836)*scale;
       const y=rect.top-bounds.top+rect.height/2+(243-470.5)*scale;
-      const r=clamp(62*scale,24,40),compact=bounds.width<=900;
-      const cardW=compact?(bounds.width<360?96:116):194,cardH=compact?104:82;
-      const introW=compact?Math.min(248,bounds.width-32-cardW-12):248;
-      const introH=compact?104:112;
-      let cardX,cardY,introX,introY,leader,introLeader,endX,endY,introEndX,introEndY;
-      if(compact){
-        // Keep both descriptions together and clear of the action buttons.
-        const actions=hero.querySelector('.nv-hero-actions,.site-hero-actions');
-        const actionsTop=actions?actions.getBoundingClientRect().top-bounds.top:bounds.height-32;
-        cardX=(bounds.width-cardW-introW-12)/2;
-        introX=cardX+cardW+12;
-        cardY=introY=clamp(actionsTop-cardH-12,82,bounds.height-cardH-16);
-        endX=cardX+cardW/2;endY=cardY-10;
-        introEndX=introX+introW/2;introEndY=introY-10;
-        leader=`M ${x-r*.65} ${y+r*.75} L ${x-r-22} ${endY-22} H ${endX} V ${endY}`;
-        introLeader=`M ${x+r*.65} ${y+r*.75} L ${x+r+22} ${introEndY-22} H ${introEndX} V ${introEndY}`;
+      const r=clamp(62*scale,24,40),phone=bounds.width<=700;
+      const cardW=phone?176:194,cardH=phone?76:82;
+      const introW=phone?Math.min(176,bounds.width*.44):248,introH=112;
+      let cardX,cardY,leader,endX,endY;
+      // Preserve the experience card's original position and horizontal layout.
+      if(phone){
+        cardX=clamp(x-cardW-26,16,bounds.width-cardW-16);
+        cardY=clamp(y-r-cardH-26,82,bounds.height-cardH-20);
+        endX=cardX+cardW+12;endY=cardY+cardH/2;
+        const elbow=Math.max(x+r+22,endX+18);
+        leader=`M ${x+r*.65} ${y-r*.75} L ${elbow} ${endY} H ${endX}`;
       }else{
         cardX=clamp(x-r-cardW-Math.min(160,bounds.width*.12),20,bounds.width-cardW-20);
         cardY=clamp(y+r+28,76,bounds.height-cardH-76);
@@ -50,18 +45,19 @@
           const above=ae.top-bounds.top-cardH-16;
           if(above>=70)cardY=Math.min(cardY,above);
         }
-        introX=clamp(x+r+Math.min(160,bounds.width*.12),20,bounds.width-introW-20);
-        introY=clamp(y+r+92,76,bounds.height-introH-76);
-        const capcut=hero.querySelector('.icon-cc').getBoundingClientRect();
-        if(introX+introW>capcut.left-bounds.left-12&&introX<capcut.right-bounds.left+12&&introY+introH>capcut.top-bounds.top-12&&introY<capcut.bottom-bounds.top+12){
-          const above=capcut.top-bounds.top-introH-16;
-          if(above>=70)introY=Math.min(introY,above);
-        }
         endX=cardX+cardW+14;endY=cardY+cardH/2;
-        introEndX=introX-14;introEndY=introY+introH/2;
         leader=`M ${x-r*.65} ${y+r*.75} L ${x-r-28} ${endY} H ${endX}`;
-        introLeader=`M ${x+r*.65} ${y+r*.75} L ${x+r+42} ${introEndY} H ${introEndX}`;
       }
+      // fitTitle centers the visible lettering at 49% of this composition.
+      const frame=hero.querySelector('.composition').getBoundingClientRect();
+      const introX=phone?bounds.width-introW-16:
+        clamp(frame.left-bounds.left+frame.width*.68,20,bounds.width-introW-20);
+      let introY=clamp(frame.top-bounds.top+frame.height*.49-introH/2,phone?82:76,bounds.height-introH-20);
+      if(phone&&introX<cardX+cardW+8&&introY<cardY+cardH+12&&introY+introH>cardY-12){
+        introY=clamp(cardY+cardH+12,82,bounds.height-introH-20);
+      }
+      const introEndX=introX-14,introEndY=introY+introH/2;
+      const introLeader=`M ${x+r*.65} ${y+r*.75} L ${x+r+28} ${introEndY} H ${introEndX}`;
       ring.setAttribute('transform',`translate(${x} ${y}) scale(${r/32})`);
       paths.forEach(path=>path.setAttribute('d',leader));
       introductionPaths.forEach(path=>path.setAttribute('d',introLeader));
