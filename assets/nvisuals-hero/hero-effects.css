@@ -120,15 +120,14 @@
 .nv-hero .introduction-copy .introduction-greeting{font-size:9px;letter-spacing:1.1px}
 .nv-hero .introduction-copy .introduction-role{font-size:8px;letter-spacing:.5px}
 @media(max-width:700px){
-  .nv-hero .experience-copy{width:156px;min-height:66px;gap:10px;padding:10px 13px}
-  .nv-hero .experience-copy strong{font-size:42px}
-  .nv-hero .experience-copy span{font-size:8.5px;letter-spacing:1.2px}
-  .nv-hero .introduction-copy{min-height:88px;gap:5px;padding:10px 12px}
-  .nv-hero .introduction-copy strong{font-size:clamp(18px,6cqw,22px);letter-spacing:.1px}
-  .nv-hero .introduction-copy .introduction-greeting{font-size:8px;letter-spacing:.8px}
-  .nv-hero .introduction-copy .introduction-role{font-size:7.5px;letter-spacing:.35px}
+  .nv-hero .experience-copy{width:min(34cqw,114px);min-height:42px;gap:6px;padding:5px 8px}
+  .nv-hero .experience-copy strong{font-size:31px}
+  .nv-hero .experience-copy span{font-size:8.5px;line-height:1.2;letter-spacing:.4px}
+  .nv-hero .introduction-copy{width:min(27cqw,108px);min-height:0;gap:3px;padding:6px 8px}
+  .nv-hero .introduction-copy strong{font-size:18px;line-height:1;letter-spacing:0;white-space:normal}
+  .nv-hero .introduction-copy .introduction-greeting{font-size:8px;letter-spacing:.3px}
+  .nv-hero .introduction-copy .introduction-role{font-size:8px;line-height:1.25;letter-spacing:.1px;text-wrap:balance}
 }
-@media(max-width:340px){.nv-hero .introduction-copy{padding:10px}.nv-hero .introduction-copy .introduction-role{letter-spacing:.2px}}
 @media(prefers-reduced-motion:reduce){.nv-hero .experience-callout{transition:none}
 .nv-hero .experience-ring-spin,.nv-hero .experience-wire-runner{animation:none}}
 @media(prefers-reduced-motion:no-preference){html[data-hero-intro=pending] .nv-hero .character-layer,html[data-hero-intro=pending] .nv-hero .tool-icon picture,html[data-hero-intro=pending] .nv-hero .hero-vectors,html[data-hero-intro=pending] #hero.nv-hero .hero-title{opacity:0}
