@@ -36,14 +36,16 @@
 .nv-hero [hidden]{display:none!important}
 @media(min-width:701px) and (max-height:650px){.nv-hero .composition{top:52%}.nv-hero .icon-ae{top:61%}.nv-hero .nv-hero-actions{bottom:22px}}
 @media(max-width:700px){
-  #hero.nv-hero{display:grid;height:auto;min-height:0;gap:24px;padding:32px 18px 56px}
-  .nv-hero .composition{position:relative;inset:auto;width:calc(100% + 36px);max-width:none;margin:0 -18px;aspect-ratio:13/10;transform:none}
-  #hero.nv-hero .hero-title{left:3%;width:94%;font-family:Themadi,'Arial Narrow',Impact,sans-serif}
+  #hero.nv-hero{display:grid;grid-template-columns:minmax(0,1fr) 44px;height:auto;min-height:0;gap:6px 8px;padding:8px 14px 14px}
+  .nv-hero .composition{position:relative;inset:auto;grid-column:1/-1;width:calc(100% + 28px);max-width:none;margin:0 -14px;aspect-ratio:7/5;transform:none}
+  #hero.nv-hero .hero-title{left:16px;width:calc(100% - 32px);font-family:Themadi,'Arial Narrow',Impact,sans-serif}
+  /* Themadi capitals extend beyond a one-em line. Paint the gradient over their full height. */
+  .nv-hero .hero-title-base{line-height:normal}
   .nv-hero .character-layer{inset:0 -28%;transform:scale(.8)}
   .nv-hero .icon-ps{left:81%;top:18%;width:16.5%}.nv-hero .icon-ae{left:14%;top:81%;width:13.5%}.nv-hero .icon-cc{left:87%;top:85%;width:11%}
-  .nv-hero .nv-hero-actions{position:relative;inset:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;width:100%;padding-right:0}
+  .nv-hero .nv-hero-actions{position:relative;inset:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;width:100%;padding-right:0}
   .nv-hero .nv-hero-actions a{font-size:10px;letter-spacing:1px;padding:12px 8px;text-align:center}
   .nv-hero .nv-hero-actions .btn-ghost{border:1px solid #bafc043d;color:#c5d0b5;background:#bafc0405}
-  .nv-hero .nv-motion-toggle{right:8px;bottom:4px;width:44px;height:44px;padding:14px}
+  .nv-hero .nv-motion-toggle{position:static;align-self:center;width:44px;height:44px;padding:14px}
 }
 @media(prefers-reduced-motion:reduce){.nv-hero .tool-icon{animation:none}}
