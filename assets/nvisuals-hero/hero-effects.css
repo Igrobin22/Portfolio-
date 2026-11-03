@@ -103,32 +103,32 @@
 .nv-hero .experience-hover-route{pointer-events:none}
 .nv-hero[data-experience=visible] .experience-hover-route{pointer-events:stroke}
 .nv-hero .experience-copy{
-  position:absolute;display:flex;align-items:center;gap:14px;width:194px;min-height:82px;
-  padding:14px 18px;background:rgb(6 14 5 / .96);border:1px solid #bafc044d;
+  position:absolute;display:flex;align-items:center;gap:12px;width:172px;min-height:72px;
+  padding:12px 16px;background:rgb(6 14 5 / .96);border:1px solid #bafc044d;
   box-shadow:0 12px 32px #0008,inset 3px 0 #bafc04;
   color:#eff4de;pointer-events:auto;user-select:text;
 }
-.nv-hero .experience-copy strong{font:400 54px/.9 'Bebas Neue','Arial Narrow',sans-serif;letter-spacing:-1px;color:#bafc04}
-.nv-hero .experience-copy span{font:500 10px/1.65 'DM Sans','Segoe UI',sans-serif;letter-spacing:1.7px;text-transform:uppercase}
+.nv-hero .experience-copy strong{font:400 46px/.9 'Bebas Neue','Arial Narrow',sans-serif;letter-spacing:-1px;color:#bafc04}
+.nv-hero .experience-copy span{font:500 9px/1.55 'DM Sans','Segoe UI',sans-serif;letter-spacing:1.4px;text-transform:uppercase}
 .nv-hero[data-experience-focus=true] .experience-copy{outline:2px solid #bafc04;outline-offset:5px}
 @keyframes experience-orbit{to{transform:rotate(360deg)}}
 @keyframes experience-wire{from{stroke-dashoffset:0}to{stroke-dashoffset:-100}}
 .nv-hero[data-motion=paused] .experience-ring-spin,.nv-hero[data-motion=paused] .experience-wire-runner{animation-play-state:paused}
 .nv-hero[data-capture=true] .experience-ring-spin,.nv-hero[data-capture=true] .experience-wire-runner{animation:none}
-.nv-hero .introduction-copy{width:248px;min-height:112px;flex-direction:column;align-items:flex-start;justify-content:center;gap:7px;padding:16px 20px}
-.nv-hero .introduction-copy strong{font-size:32px;line-height:1;letter-spacing:.2px;white-space:nowrap}
-.nv-hero .introduction-copy .introduction-greeting{font-size:10px;letter-spacing:1.6px}
-.nv-hero .introduction-copy .introduction-role{font-size:9px;letter-spacing:.8px}
+.nv-hero .introduction-copy{width:200px;min-height:88px;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;padding:11px 14px}
+.nv-hero .introduction-copy strong{font-size:26px;line-height:1;letter-spacing:.2px;white-space:nowrap}
+.nv-hero .introduction-copy .introduction-greeting{font-size:9px;letter-spacing:1.1px}
+.nv-hero .introduction-copy .introduction-role{font-size:8px;letter-spacing:.5px}
 @media(max-width:700px){
-  .nv-hero .experience-copy{width:176px;min-height:76px;gap:12px;padding:12px 15px}
-  .nv-hero .experience-copy strong{font-size:49px}
-  .nv-hero .experience-copy span{font-size:9px;letter-spacing:1.35px}
-  .nv-hero .introduction-copy{min-height:112px;gap:7px}
-  .nv-hero .introduction-copy strong{font-size:26px;letter-spacing:.1px}
-  .nv-hero .introduction-copy .introduction-greeting{font-size:9px;letter-spacing:1px}
-  .nv-hero .introduction-copy .introduction-role{font-size:8.5px;letter-spacing:.5px}
+  .nv-hero .experience-copy{width:156px;min-height:66px;gap:10px;padding:10px 13px}
+  .nv-hero .experience-copy strong{font-size:42px}
+  .nv-hero .experience-copy span{font-size:8.5px;letter-spacing:1.2px}
+  .nv-hero .introduction-copy{min-height:88px;gap:5px;padding:10px 12px}
+  .nv-hero .introduction-copy strong{font-size:clamp(18px,6cqw,22px);letter-spacing:.1px}
+  .nv-hero .introduction-copy .introduction-greeting{font-size:8px;letter-spacing:.8px}
+  .nv-hero .introduction-copy .introduction-role{font-size:7.5px;letter-spacing:.35px}
 }
-@media(max-width:340px){.nv-hero .introduction-copy{padding:12px}.nv-hero .introduction-copy strong{font-size:24px}.nv-hero .introduction-copy .introduction-role{font-size:8px;letter-spacing:.3px}}
+@media(max-width:340px){.nv-hero .introduction-copy{padding:10px}.nv-hero .introduction-copy .introduction-role{letter-spacing:.2px}}
 @media(prefers-reduced-motion:reduce){.nv-hero .experience-callout{transition:none}
 .nv-hero .experience-ring-spin,.nv-hero .experience-wire-runner{animation:none}}
 @media(prefers-reduced-motion:no-preference){html[data-hero-intro=pending] .nv-hero .character-layer,html[data-hero-intro=pending] .nv-hero .tool-icon picture,html[data-hero-intro=pending] .nv-hero .hero-vectors,html[data-hero-intro=pending] #hero.nv-hero .hero-title{opacity:0}

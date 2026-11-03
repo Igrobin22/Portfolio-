@@ -27,8 +27,8 @@
       const x=rect.left-bounds.left+rect.width/2+(834-836)*scale;
       const y=rect.top-bounds.top+rect.height/2+(243-470.5)*scale;
       const r=clamp(62*scale,24,40),phone=bounds.width<=700;
-      const cardW=phone?176:194,cardH=phone?76:82;
-      const introW=phone?Math.min(176,bounds.width*.44):248,introH=112;
+      const cardW=phone?156:172,cardH=phone?66:72;
+      const introW=phone?Math.min(152,bounds.width*.4):200,introH=88;
       let cardX,cardY,leader,endX,endY;
       // Preserve the experience card's original position and horizontal layout.
       if(phone){
