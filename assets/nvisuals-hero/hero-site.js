@@ -21,7 +21,7 @@
     const measure=document.createElement('canvas').getContext('2d');
     measure.font='400 500px '+families[headingFont];
     const metrics=measure.measureText('NVISUALS'),desktop=!mobile.matches;
-    const width=frame.width*(desktop?.83:.94),inkWidth=metrics.actualBoundingBoxLeft+metrics.actualBoundingBoxRight;
+    const width=desktop?frame.width*.83:title.clientWidth,inkWidth=metrics.actualBoundingBoxLeft+metrics.actualBoundingBoxRight;
     const size=500*width/(inkWidth||metrics.width);
     const inkHeight=(metrics.actualBoundingBoxAscent+metrics.actualBoundingBoxDescent)*size/500;
     const scale=frame.height*(desktop?.565:.60)/inkHeight;
