@@ -27,16 +27,16 @@
       const x=rect.left-bounds.left+rect.width/2+(834-836)*scale;
       const y=rect.top-bounds.top+rect.height/2+(243-470.5)*scale;
       const r=clamp(62*scale,24,40),phone=bounds.width<=700;
-      const cardW=phone?156:172,cardH=phone?66:72;
-      const introW=phone?Math.min(152,bounds.width*.4):200,introH=88;
+      // Read the actual panels so wrapped text still lines up with its connector.
+      const cardW=copy.offsetWidth,cardH=copy.offsetHeight;
+      const introW=introduction.offsetWidth,introH=introduction.offsetHeight;
+      const frame=hero.querySelector('.composition').getBoundingClientRect();
       let cardX,cardY,leader,endX,endY;
-      // Preserve the experience card's original position and horizontal layout.
       if(phone){
-        cardX=clamp(x-cardW-26,16,bounds.width-cardW-16);
-        cardY=clamp(y-r-cardH-26,82,bounds.height-cardH-20);
-        endX=cardX+cardW+12;endY=cardY+cardH/2;
-        const elbow=Math.max(x+r+22,endX+18);
-        leader=`M ${x+r*.65} ${y-r*.75} L ${elbow} ${endY} H ${endX}`;
+        cardX=10;
+        cardY=clamp(y-r-cardH-8,frame.top-bounds.top+4,bounds.height-cardH-12);
+        endX=cardX+cardW+7;endY=cardY+cardH/2;
+        leader=`M ${x-r*.65} ${y-r*.75} L ${x-r-16} ${endY} H ${endX}`;
       }else{
         cardX=clamp(x-r-cardW-Math.min(160,bounds.width*.12),20,bounds.width-cardW-20);
         cardY=clamp(y+r+28,76,bounds.height-cardH-76);
@@ -49,22 +49,21 @@
         leader=`M ${x-r*.65} ${y+r*.75} L ${x-r-28} ${endY} H ${endX}`;
       }
       // fitTitle centers the visible lettering at 49% of this composition.
-      const frame=hero.querySelector('.composition').getBoundingClientRect();
-      const introX=phone?bounds.width-introW-16:
+      const introX=phone?bounds.width-introW-8:
         clamp(frame.left-bounds.left+frame.width*.68,20,bounds.width-introW-20);
       let introY=clamp(frame.top-bounds.top+frame.height*.49-introH/2,phone?82:76,bounds.height-introH-20);
       if(phone&&introX<cardX+cardW+8&&introY<cardY+cardH+12&&introY+introH>cardY-12){
         introY=clamp(cardY+cardH+12,82,bounds.height-introH-20);
       }
-      const introEndX=introX-14,introEndY=introY+introH/2;
+      const introEndX=introX-(phone?6:14),introEndY=introY+introH/2;
       const introLeader=`M ${x+r*.65} ${y+r*.75} L ${x+r+28} ${introEndY} H ${introEndX}`;
       ring.setAttribute('transform',`translate(${x} ${y}) scale(${r/32})`);
       paths.forEach(path=>path.setAttribute('d',leader));
       introductionPaths.forEach(path=>path.setAttribute('d',introLeader));
       endpoint.setAttribute('cx',endX);endpoint.setAttribute('cy',endY);
       introductionEndpoint.setAttribute('cx',introEndX);introductionEndpoint.setAttribute('cy',introEndY);
-      copy.style.left=cardX+'px';copy.style.top=cardY+'px';copy.style.width=cardW+'px';
-      introduction.style.left=introX+'px';introduction.style.top=introY+'px';introduction.style.width=introW+'px';
+      copy.style.left=cardX+'px';copy.style.top=cardY+'px';
+      introduction.style.left=introX+'px';introduction.style.top=introY+'px';
     }
     function render(){
       clearTimeout(timer);
@@ -91,7 +90,7 @@
     function outside(event){if(!trigger.contains(event.target)&&!tip.contains(event.target))close();}
     function escape(event){if(event.key==='Escape')close();}
     function scroll(){if(!pinned&&!focused)close();}
-    const resize=new ResizeObserver(layout);resize.observe(hero);resize.observe(canvas);
+    const resize=new ResizeObserver(layout);resize.observe(hero);resize.observe(canvas);resize.observe(copy);resize.observe(introduction);
     const intersection=new IntersectionObserver(entries=>{if(!entries[0].isIntersecting)close();});intersection.observe(hero);
     trigger.addEventListener('pointerenter',enterTrigger);trigger.addEventListener('pointerleave',leaveTrigger);
     trigger.addEventListener('pointerdown',pointerDown);trigger.addEventListener('click',activate);
