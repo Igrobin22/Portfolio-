@@ -33,10 +33,10 @@
       const frame=hero.querySelector('.composition').getBoundingClientRect();
       let cardX,cardY,leader,endX,endY;
       if(phone){
-        cardX=10;
-        cardY=clamp(y-r-cardH-8,frame.top-bounds.top+4,bounds.height-cardH-12);
+        cardX=clamp(frame.left-bounds.left+frame.width*.05,10,bounds.width-cardW-12);
+        cardY=clamp(frame.top-bounds.top+frame.height*.525-cardH/2,frame.top-bounds.top+4,bounds.height-cardH-12);
         endX=cardX+cardW+7;endY=cardY+cardH/2;
-        leader=`M ${x-r*.65} ${y-r*.75} L ${x-r-16} ${endY} H ${endX}`;
+        leader=`M ${x-r*.65} ${y+r*.75} L ${x-r-20} ${endY} H ${endX}`;
       }else{
         cardX=clamp(x-r-cardW-Math.min(160,bounds.width*.12),20,bounds.width-cardW-20);
         cardY=clamp(y+r+28,76,bounds.height-cardH-76);

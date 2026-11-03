@@ -123,8 +123,8 @@
   .nv-hero .experience-copy{width:min(34cqw,114px);min-height:42px;gap:6px;padding:5px 8px}
   .nv-hero .experience-copy strong{font-size:31px}
   .nv-hero .experience-copy span{font-size:8.5px;line-height:1.2;letter-spacing:.4px}
-  .nv-hero .introduction-copy{width:min(27cqw,108px);min-height:0;gap:3px;padding:6px 8px}
-  .nv-hero .introduction-copy strong{font-size:18px;line-height:1;letter-spacing:0;white-space:normal}
+  .nv-hero .introduction-copy{width:min(24cqw,92px);min-height:0;gap:2px;padding:4px 6px}
+  .nv-hero .introduction-copy strong{font-size:16px;line-height:1;letter-spacing:0;white-space:normal}
   .nv-hero .introduction-copy .introduction-greeting{font-size:8px;letter-spacing:.3px}
   .nv-hero .introduction-copy .introduction-role{font-size:8px;line-height:1.25;letter-spacing:.1px;text-wrap:balance}
 }
