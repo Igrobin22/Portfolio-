@@ -115,9 +115,20 @@
 @keyframes experience-wire{from{stroke-dashoffset:0}to{stroke-dashoffset:-100}}
 .nv-hero[data-motion=paused] .experience-ring-spin,.nv-hero[data-motion=paused] .experience-wire-runner{animation-play-state:paused}
 .nv-hero[data-capture=true] .experience-ring-spin,.nv-hero[data-capture=true] .experience-wire-runner{animation:none}
-@media(max-width:700px){.nv-hero .experience-copy{width:176px;min-height:76px;gap:12px;padding:12px 15px}
-.nv-hero .experience-copy strong{font-size:49px}
-.nv-hero .experience-copy span{font-size:9px;letter-spacing:1.35px}}
+.nv-hero .introduction-copy{width:248px;min-height:112px;flex-direction:column;align-items:flex-start;justify-content:center;gap:7px;padding:16px 20px}
+.nv-hero .introduction-copy strong{font-size:32px;line-height:1;letter-spacing:.2px;white-space:nowrap}
+.nv-hero .introduction-copy .introduction-greeting{font-size:10px;letter-spacing:1.6px}
+.nv-hero .introduction-copy .introduction-role{font-size:9px;letter-spacing:.8px}
+@media(max-width:900px){
+  .nv-hero .experience-copy{min-height:104px;flex-direction:column;align-items:flex-start;justify-content:center;gap:6px;padding:12px 15px}
+  .nv-hero .experience-copy strong{font-size:42px}
+  .nv-hero .experience-copy span{font-size:9px;letter-spacing:1.2px;line-height:1.5}
+  .nv-hero .introduction-copy{gap:7px}
+  .nv-hero .introduction-copy strong{font-size:26px;letter-spacing:.1px}
+  .nv-hero .introduction-copy .introduction-greeting{font-size:9px;letter-spacing:1px}
+  .nv-hero .introduction-copy .introduction-role{font-size:8.5px;letter-spacing:.5px}
+}
+@media(max-width:340px){.nv-hero .introduction-copy strong{font-size:24px}.nv-hero .experience-copy{padding:12px}.nv-hero .introduction-copy .introduction-role{font-size:8px;letter-spacing:.3px}}
 @media(prefers-reduced-motion:reduce){.nv-hero .experience-callout{transition:none}
 .nv-hero .experience-ring-spin,.nv-hero .experience-wire-runner{animation:none}}
 @media(prefers-reduced-motion:no-preference){html[data-hero-intro=pending] .nv-hero .character-layer,html[data-hero-intro=pending] .nv-hero .tool-icon picture,html[data-hero-intro=pending] .nv-hero .hero-vectors,html[data-hero-intro=pending] #hero.nv-hero .hero-title{opacity:0}
