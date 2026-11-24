@@ -1,3 +1,13 @@
+# Original hero restored — 24 November 2026
+
+The live homepage again uses the original “Stories that move people” headline, green grid, call-to-action buttons and rotating camera/video-camera/editor blueprint. The earlier character hero assets remain archived in the repository and its standalone preview, but the homepage no longer loads them. The About, portfolio folders, Services and Contact sections retain their current content and order.
+
+`assets/classic-hero.js` runs the original blueprint motion only while visible on desktop, pauses when the tab or homepage is inactive, and respects reduced motion. The existing splash waits only for fonts. The original mobile text layout is restored; its decorative blueprint is hidden below 769 px.
+
+The previous integration notes below describe the archived character hero.
+
+---
+
 # Animated homepage hero
 
 The marked homepage tagline, headline, paragraph, scroll label and rotating blueprint are replaced with the approved NVISUALS composition. The existing navigation, opening splash, Work/Contact destinations and remaining page sections are retained.
